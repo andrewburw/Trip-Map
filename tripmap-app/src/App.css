@@ -1,0 +1,21 @@
+.bg-main {
+  background-image: url("bg_main.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: white;
+  background-position: 0 35%;
+}
+
+.bg-main img {
+  filter: brightness(50%);
+}
+.customMenuLbl {
+
+  color:#3273dc;
+}
+
+.leaflet-container {
+  
+  height: 30rem;
+  width: 100%;
+}
