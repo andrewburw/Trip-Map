@@ -32,13 +32,13 @@ clickMap = (e) =>{
     
       let temp = [...this.state.trip];
   
-      temp.push([Number(lat.toFixed(4)),Number(lng.toFixed(4))])
+      temp.push([Number(lat.toFixed(4)),Number(lng.toFixed(4))]);
   
       
-      this.setState({'trip':temp})
+      this.setState({'trip':temp});
     } else if(this.state.selectedMenu==='addComent'){
-      this.setState({'modal':'comment'}) 
-      this.setState({'activeComentCoordinates':[Number(lat.toFixed(4)),Number(lng.toFixed(4))]})
+      this.setState({'modal':'comment'}) ;
+      this.setState({'activeComentCoordinates':[Number(lat.toFixed(4)),Number(lng.toFixed(4))]});
     }
    
 }
@@ -49,15 +49,15 @@ reciveDataFromModalComent = (data) => {
    temp.push({
        coordinates: this.state.activeComentCoordinates,
        comment: data
-   })
-    this.setState({'activeComentCoordinates': ''})
-    this.setState({'commentMainDATA': temp})
+   });
+    this.setState({'activeComentCoordinates': ''});
+    this.setState({'commentMainDATA': temp});
 
 
 }
 
 buttonClickMenu = (e) =>{
-  this.setState({'selectedMenu':e.target.value})
+  this.setState({'selectedMenu':e.target.value});
   
 
 }
@@ -65,8 +65,8 @@ buttonClickMenu = (e) =>{
 handleCloseModal = (value) =>{
   
   if (value=== 'modalComment') {
-    this.setState({'modal':''}) 
-    this.setState({'activeComentCoordinates': ''})
+    this.setState({'modal':''}); 
+    this.setState({'activeComentCoordinates': ''});
   }
   
   
@@ -77,13 +77,13 @@ buttonClickDelLine = () => {
     // delete last line 
     let temp = [...this.state.trip];
     temp.pop();
-    this.setState({'trip':temp})
+    this.setState({'trip':temp});
    
 }
 
 buttonClickCancel = () => {
    //delete all route
-    this.setState({'trip':[]})
+    this.setState({'trip':[]});
 
 
 }
@@ -93,7 +93,7 @@ openPopup (marker) {
   
   if (marker && marker.leafletElement) {
     window.setTimeout(() => {
-      marker.leafletElement.openPopup()
+      marker.leafletElement.openPopup();
     })
   }
 }
@@ -102,15 +102,15 @@ openPopup (marker) {
    
     let buttonSeleted = {}
       if (this.state.selectedMenu === 'drawRoute') {
-        buttonSeleted.drawRoute = 'buttonMenuIndrawRoute'
+        buttonSeleted.drawRoute = 'buttonMenuIndrawRoute';
       
       }
       if (this.state.selectedMenu === 'addComent') {
-        buttonSeleted.addComent = 'buttonMenuIndrawRoute'
+        buttonSeleted.addComent = 'buttonMenuIndrawRoute';
         
       }
       if (this.state.selectedMenu === 'addStop') {
-        buttonSeleted.addStop = 'buttonMenuIndrawRoute'
+        buttonSeleted.addStop = 'buttonMenuIndrawRoute';
       }
 
    
