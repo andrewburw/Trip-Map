@@ -15,7 +15,12 @@
 }
 
 .leaflet-container {
-  
+  z-index: 10;
   height: 30rem;
   width: 100%;
+}
+
+.buttonMenuIndrawRoute {
+   font-weight: bold;
+     border-color: black;
 }
