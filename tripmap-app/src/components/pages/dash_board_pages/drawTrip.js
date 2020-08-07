@@ -39,6 +39,10 @@ clickMap = (e) =>{
     } else if(this.state.selectedMenu==='addComent'){
       this.setState({'modal':'comment'}) ;
       this.setState({'activeComentCoordinates':[Number(lat.toFixed(4)),Number(lng.toFixed(4))]});
+    } else if (this.state.selectedMenu==='addStop' ) {
+
+      this.setState({'modal':'stop'}) ;
+
     }
    
 }
@@ -63,10 +67,13 @@ buttonClickMenu = (e) =>{
 }
 
 handleCloseModal = (value) =>{
-  
+  this.setState({'modal':''}); 
   if (value=== 'modalComment') {
-    this.setState({'modal':''}); 
     this.setState({'activeComentCoordinates': ''});
+  } else if(value=== 'modalStop'){
+      
+
+
   }
   
   
@@ -123,7 +130,7 @@ openPopup (marker) {
 <div className="column is-main-content" >
   <h1 className="title is-5" style={{'marginTop': '1rem'}}>Draw your trip</h1>
   {this.state.modal === 'comment' ? <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} /> :""}
-   <StopInsert />
+  {this.state.modal === 'stop' ? <StopInsert closeModal={this.handleCloseModal} /> : ""} 
   <hr />
   <div className="level">
     <div className="level-left">
