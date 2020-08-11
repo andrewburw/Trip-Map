@@ -80,11 +80,14 @@ handleAddTitle = (e) => {
 }
 saveSpot = () => {
 
-
- console.log('sended');
-
-
-
+  
+    this.props.data({
+      title: this.state.title,
+      raiting: this.state.raiting,
+      comment: this.state.comment
+    });
+    this.handleClickClose()
+ 
 }
 
 

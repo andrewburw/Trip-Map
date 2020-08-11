@@ -4,6 +4,7 @@ import { Map, TileLayer, Polyline,Marker, Popup} from 'react-leaflet'
 import L from 'leaflet';
 import CommentInsert from './modals/modalComment';
 import StopInsert from './modals/modalStop';
+import getDistance from './custome_modules/getDistance'; // my custom module for calculating trip length
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -18,8 +19,15 @@ class DashMain extends Component {
             trip: [],
             selectedMenu: null,
             modal: '',
-            activeComentCoordinates: '', // temprary coordinates while writing a comment 
-            commentMainDATA:[]
+            activeComentCoordinates: '', // temprary coordinates while writing a comment,
+            activeStopCoordinates: '',   // temprary coordinates while writing a comment,
+            commentMainDATA:[],
+            stopMainDATA:[{
+              coordinates: [57.1317, 384.6571],
+              comment: 'Test test comment lorem ipusom ',
+              raiting: 5,
+              title: 'Jurkalne - Liepaja'
+          }]
         };
     }
 
@@ -33,7 +41,7 @@ clickMap = (e) =>{
       let temp = [...this.state.trip];
   
       temp.push([Number(lat.toFixed(4)),Number(lng.toFixed(4))]);
-  
+      
       
       this.setState({'trip':temp});
     } else if(this.state.selectedMenu==='addComent'){
@@ -42,7 +50,7 @@ clickMap = (e) =>{
     } else if (this.state.selectedMenu==='addStop' ) {
 
       this.setState({'modal':'stop'}) ;
-
+      this.setState({'activeStopCoordinates':[Number(lat.toFixed(4)),Number(lng.toFixed(4))]});
     }
    
 }
@@ -59,7 +67,20 @@ reciveDataFromModalComent = (data) => {
 
 
 }
+reciveDataFromModalStop = (data) => {
+  let temp = [...this.state.stopMainDATA];
+   console.log(data)
+   temp.push({
+       coordinates: this.state.activeStopCoordinates,
+       comment: data.comment,
+       raiting: data.raiting,
+       title: data.title
+   });
+    this.setState({'activeStopCoordinates': ''});
+    this.setState({'stopMainDATA': temp});
 
+
+}
 buttonClickMenu = (e) =>{
   this.setState({'selectedMenu':e.target.value});
   
@@ -71,7 +92,7 @@ handleCloseModal = (value) =>{
   if (value=== 'modalComment') {
     this.setState({'activeComentCoordinates': ''});
   } else if(value=== 'modalStop'){
-      
+    this.setState({'activeStopCoordinates': ''}); 
 
 
   }
@@ -95,18 +116,19 @@ buttonClickCancel = () => {
 
 }
 openPopup (marker) {
-
-  // opening popUp when  tank selected from table
   
+     
+  // opening popUp when  tank selected from table
+  /*
   if (marker && marker.leafletElement) {
     window.setTimeout(() => {
       marker.leafletElement.openPopup();
     })
-  }
+  } */
 }
   render() {
     //************ BUTTON MENU SELECTED***************
-   
+    
     let buttonSeleted = {}
       if (this.state.selectedMenu === 'drawRoute') {
         buttonSeleted.drawRoute = 'buttonMenuIndrawRoute';
@@ -121,7 +143,8 @@ openPopup (marker) {
       }
 
    
-   
+     
+      
 
     return(
     
@@ -130,9 +153,10 @@ openPopup (marker) {
 <div className="column is-main-content" >
   <h1 className="title is-5" style={{'marginTop': '1rem'}}>Draw your trip</h1>
   {this.state.modal === 'comment' ? <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} /> :""}
-  {this.state.modal === 'stop' ? <StopInsert closeModal={this.handleCloseModal} /> : ""} 
+  {this.state.modal === 'stop' ? <StopInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalStop}/> : ""} 
   <hr />
   <div className="level">
+  
     <div className="level-left">
       <div className="buttons are-small">
         <button className="button is-success">Save Trip</button>
@@ -162,19 +186,47 @@ openPopup (marker) {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
      <Polyline key={124} positions={this.state.trip} color={'red'} />
-    {  Array.from(this.state.commentMainDATA).map((item, i) => {
+{  Array.from(this.state.commentMainDATA).map((item, i) => {
 
-return  (  <Marker key={Math.random()} ref={this.openPopup} position={item['coordinates']}>
-
-
-<Popup><h1>Comment:</h1><p>{item['comment']}</p></Popup>
-</Marker>)
+     return  (  <Marker key={Math.random()} ref={this.openPopup} position={item['coordinates']}>
+                  <Popup><h1>Comment:</h1><p>{item['comment']}</p></Popup>
+                </Marker>)
 
 })}
-      
-    </Map>
-    
 
+{  Array.from(this.state.stopMainDATA).map((item, i) => {
+
+return  (  <Marker key={Math.random()} ref={this.openPopup} position={item['coordinates']}>
+            <Popup>
+            <div className="card">
+ 
+  <div className="card-content">
+    <div className="content">
+      <h1 className="title is-4">{item['title']}</h1>
+      <p className="has-text-weight-semibold">User Raiting: {item['raiting']}</p>
+      <p className="has-text-weight-semibold">User Comment:</p>
+      <p> {item['comment']}</p>
+      <br />
+      <time dateTime="2016-1-1">11:09 PM - 1 Jan 2020</time>
+    </div>
+  </div>
+  <footer className="card-footer">
+    <a href="1" className="card-footer-item">Edit</a>
+    <a href="1"className="card-footer-item">Delete</a>
+  </footer>
+  </div>
+            </Popup>
+           </Marker>)
+
+})}
+
+
+
+
+</Map>
+
+<div><p className="is-size-7">Trip Distance: {getDistance(this.state.trip)} km</p></div>
+ 
  </div>
 </div>
 
