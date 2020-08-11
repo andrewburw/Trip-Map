@@ -24,3 +24,11 @@
    font-weight: bold;
      border-color: black;
 }
+.link-button {
+  background-color: transparent;
+  color: #0078A8;
+  border: none;
+  cursor: pointer;
+  display: inline;
+ }
+

@@ -7,7 +7,10 @@ class AddComment extends Component {
     constructor(props) {
         super(props);
            this.state = {
-                 text: ''
+                 text: '',
+                 editText: this.props.editData.comment,
+                 modeEdit: false
+                 
 
            }
       }
@@ -16,18 +19,41 @@ class AddComment extends Component {
         this.props.closeModal('modalComment');
         // clossing modal
  }
+
  handleAddComment = () => {
-    this.props.data(this.state.text);
+
+  if (this.state.modeEdit === false) {
+    this.props.data({text: this.state.text,
+      id: '_' + Math.random().toString(36).substr(2, 9),
+      edited: false });
+  } else {
+    this.props.data({text: this.state.editText,
+      id: this.props.editData.id,
+      edited: true });
+
+  }
+    
     this.handleClickClose()
  }
+
+
 handleAddText = (e) => {
     this.setState({text: e.target.value});
 
 }
+
+hadleEditText = (e) => {
+
+  this.setState({ editText: e.target.value});
+  this.setState({ modeEdit: true}); // this needed to recognize if text is edited
+}
   render(){
+      let textAreaArea = <textarea className="textarea" value={this.state.text} onChange={this.handleAddText} maxLength="150"></textarea>
+
+    if (this.props.editData.comment !== undefined) {
+      textAreaArea = <textarea className="textarea" value={this.state.editText} onChange={this.hadleEditText} maxLength="150"></textarea>
+    }
       
-    
-    
     return(
         <div className="modal is-active">
         <div className="modal-background"></div>
@@ -39,7 +65,7 @@ handleAddText = (e) => {
           <section className="modal-card-body">
            <h1>Add your comment for this spot:</h1>
            <br />
-           <textarea className="textarea" value={this.state.value} onChange={this.handleAddText} maxLength="150"></textarea>
+           {textAreaArea}
           </section>
           <footer className="modal-card-foot">
             <button className="button is-success" onClick={this.handleAddComment}>Save changes</button>

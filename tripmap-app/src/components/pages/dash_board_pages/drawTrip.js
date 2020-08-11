@@ -20,14 +20,10 @@ class DashMain extends Component {
             selectedMenu: null,
             modal: '',
             activeComentCoordinates: '', // temprary coordinates while writing a comment,
-            activeStopCoordinates: '',   // temprary coordinates while writing a comment,
+            activeStopCoordinates: '',   // temprary coordinates while writing a stop camp,
             commentMainDATA:[],
-            stopMainDATA:[{
-              coordinates: [57.1317, 384.6571],
-              comment: 'Test test comment lorem ipusom ',
-              raiting: 5,
-              title: 'Jurkalne - Liepaja'
-          }]
+            ifeditComment:'',
+            stopMainDATA:[]
         };
     }
 
@@ -57,19 +53,27 @@ clickMap = (e) =>{
 
 reciveDataFromModalComent = (data) => {
   let temp = [...this.state.commentMainDATA];
-
-   temp.push({
-       coordinates: this.state.activeComentCoordinates,
-       comment: data
-   });
+  
+  if (data.edited === false) {
+    temp.push({
+      coordinates: this.state.activeComentCoordinates,
+      comment: data.text,
+      id: data.id
+  });
+  } else {
+     //if comment edited run this branch of code
+    let objIndex = this.state.commentMainDATA.findIndex((obj => obj.id === data.id));
+    temp[objIndex].comment = data.text
+  }
+   
     this.setState({'activeComentCoordinates': ''});
     this.setState({'commentMainDATA': temp});
-
+    this.setState({'ifeditComment': ''}); // if comment is edited delete temp  data
 
 }
 reciveDataFromModalStop = (data) => {
   let temp = [...this.state.stopMainDATA];
-   console.log(data)
+  
    temp.push({
        coordinates: this.state.activeStopCoordinates,
        comment: data.comment,
@@ -88,9 +92,11 @@ buttonClickMenu = (e) =>{
 }
 
 handleCloseModal = (value) =>{
+ 
   this.setState({'modal':''}); 
   if (value=== 'modalComment') {
     this.setState({'activeComentCoordinates': ''});
+    this.setState({'ifeditComment': ''});
   } else if(value=== 'modalStop'){
     this.setState({'activeStopCoordinates': ''}); 
 
@@ -115,16 +121,21 @@ buttonClickCancel = () => {
 
 
 }
-openPopup (marker) {
+// ***************** POPUP BUTTONS *******************
+
+
+buttonClickEditComment = (e) =>{
   
-     
-  // opening popUp when  tank selected from table
-  /*
-  if (marker && marker.leafletElement) {
-    window.setTimeout(() => {
-      marker.leafletElement.openPopup();
-    })
-  } */
+  this.setState({'modal':'comment'});
+  this.setState({'ifeditComment': this.state.commentMainDATA.find(x => x.id === e.target.id)});
+ 
+}
+
+buttonClickDeleteComment = (e) => {
+  let temp = [...this.state.commentMainDATA];
+
+ //stayed here 
+
 }
   render() {
     //************ BUTTON MENU SELECTED***************
@@ -152,7 +163,8 @@ openPopup (marker) {
 
 <div className="column is-main-content" >
   <h1 className="title is-5" style={{'marginTop': '1rem'}}>Draw your trip</h1>
-  {this.state.modal === 'comment' ? <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} /> :""}
+  {this.state.ifeditComment !== ''?  <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} editData={this.state.ifeditComment }/> :""}
+  {this.state.modal === 'comment' ? <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} editData={this.state.ifeditComment} /> :""}
   {this.state.modal === 'stop' ? <StopInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalStop}/> : ""} 
   <hr />
   <div className="level">
@@ -188,15 +200,30 @@ openPopup (marker) {
      <Polyline key={124} positions={this.state.trip} color={'red'} />
 {  Array.from(this.state.commentMainDATA).map((item, i) => {
 
-     return  (  <Marker key={Math.random()} ref={this.openPopup} position={item['coordinates']}>
-                  <Popup><h1>Comment:</h1><p>{item['comment']}</p></Popup>
+     return  (  <Marker key={Math.random()}  position={item['coordinates']}>
+                  <Popup> <div className="card">
+ 
+ <div className="card-content">
+   <div className="content">
+     <h1 className="title is-4">User Comment</h1>
+      <p> {item['comment']}</p>
+     <br />
+     <time dateTime="2016-1-1">11:09 PM - 1 Jan 2020</time>
+   </div>
+ </div>
+ <footer className="card-footer">
+   <button  className="link-button card-footer-item" id={item['id']} onClick={this.buttonClickEditComment} >Edit</button>
+   <button  className="link-button card-footer-item" id={item['id']} onClick={this.buttonClickDeleteComment}>Delete</button>
+ 
+ </footer>
+ </div></Popup>
                 </Marker>)
 
 })}
 
 {  Array.from(this.state.stopMainDATA).map((item, i) => {
 
-return  (  <Marker key={Math.random()} ref={this.openPopup} position={item['coordinates']}>
+return  (  <Marker key={Math.random()}  position={item['coordinates']}>
             <Popup>
             <div className="card">
  
