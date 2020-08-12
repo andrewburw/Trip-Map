@@ -8,8 +8,8 @@ import {
 import DashMain from './dash_board_pages/dashMain';
 import Mymap from './dash_board_pages/myMap';
 import DrawTrip from './dash_board_pages/drawTrip';
-
-
+import ViewTrips from './dash_board_pages/viewTrips';
+import ViewMap from './dash_board_pages/viewMap';
 
 class DashBoard extends Component {
          
@@ -38,7 +38,7 @@ class DashBoard extends Component {
   <ul className="menu-list">
     <li><a href="/">Boat Trips</a></li>
     <li><a href="/">Walk Trips</a></li>
-    <li><a href="/">View all trips</a></li>
+    <li><Link to="/dashboard/viewtrips">All Trips</Link></li>
   </ul>
   <p className="menu-label">
     New trip
@@ -55,6 +55,8 @@ class DashBoard extends Component {
       <Route exact path="/dashboard" component={DashMain} />
       <Route path="/dashboard/mymap" component={Mymap} />
       <Route path="/dashboard/drawtrip" component={DrawTrip} />
+      <Route path="/dashboard/viewtrips" component={ViewTrips} />
+      <Route path="/dashboard/viewmap" component={ViewMap} />
     </Switch>
    </div>
    </div> 

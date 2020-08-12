@@ -180,6 +180,7 @@ if (this.state.sendedDataSuccess === false) {
         <option>Select dropdown</option>
         <option>by boats</option>
         <option>by walk</option>
+        <option>by bicycle</option>
       </select>
     </div>
   </div>
