@@ -7,9 +7,12 @@ class AddStop extends Component {
     constructor(props) {
         super(props);
            this.state = {
-                 title: '',
-                 raiting: '',
-                 comment: '',
+                 title: this.props.dataEdit.title,
+                 raiting: this.props.dataEdit.rating,
+                 comment: this.props.dataEdit.comment,
+                  forModyfyTitle: '',
+                  forModyfyRaiting: '',
+                  forModyfyComment: '',
                  errorInField: {title:null,
                                 raiting: null,
                                 text: null},
@@ -17,6 +20,21 @@ class AddStop extends Component {
 
            }
       }
+
+/* {
+        coordinates: [Number(lat.toFixed(4)),Number(lng.toFixed(4))],
+        title: '',
+        raiting: 0,
+        comment: '',
+        modyfy: false
+
+      }*/
+/*
+
+On the page draw a trip, an object with empty fields is created, it is sent to the add stop module, 
+it is modified and returned back to the page draw a trip.
+this allows you to simultaneously use the ability to add new data as well as modify data.
+*/
 handleClickClose = () => {
 
         this.props.closeModal('modalStop');
@@ -35,7 +53,7 @@ let result = {...this.state.errorInField};
     if(!reg.test(val)) {
 
      result.title = true;
-      console.log('error')
+     
     }else {
       result.title = false;
     } 
@@ -81,10 +99,14 @@ handleAddTitle = (e) => {
 saveSpot = () => {
 
   
+  
     this.props.data({
       title: this.state.title,
       raiting: this.state.raiting,
-      comment: this.state.comment
+      comment: this.state.comment,
+      coordinates: this.props.dataEdit.coordinates,
+      modeModyfy: this.props.dataEdit.modyfy,
+      id: this.props.dataEdit.id
     });
     this.handleClickClose()
  
@@ -94,7 +116,7 @@ saveSpot = () => {
 
 
   render(){
-       console.log(this.state.errorInField);
+       
 // *********** INPUT ERRORS ***********************
     let inputClasserr,
         inputMessage,
@@ -159,7 +181,7 @@ saveSpot = () => {
 <div className="field">
   <label className="label">Spot Title</label>
   <div className="control has-icons-left has-icons-right">
-    <input className={inputClasserr} type="text"  maxLength="30" onChange={this.handleAddTitle} placeholder="Title input"  />
+    <input className={inputClasserr} type="text"   value={this.state.title || ''} maxLength="30" onChange={this.handleAddTitle} placeholder="Title input"  />
     <span className="icon is-small is-left">
       <i className="fas fa-user"></i>
     </span>
@@ -192,7 +214,7 @@ saveSpot = () => {
 <div className="field">
   <label className="label">Comment</label>
   <div className="control">
-    <textarea className={ textClassErr} value={this.state.value} onChange={this.handleAddText} maxLength="150" placeholder="Textarea"></textarea>
+    <textarea className={ textClassErr} value={this.state.comment || ''} onChange={this.handleAddText} maxLength="150" placeholder="Textarea"></textarea>
   </div>
 </div>
 {textMessage}

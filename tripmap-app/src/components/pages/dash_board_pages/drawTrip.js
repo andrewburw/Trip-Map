@@ -19,10 +19,9 @@ class DashMain extends Component {
             trip: [],
             selectedMenu: null,
             modal: '',
-            activeComentCoordinates: '', // temprary coordinates while writing a comment,
-            activeStopCoordinates: '',   // temprary coordinates while writing a stop camp,
+            activeCommentData: '', 
+            activeStopData: '',  
             commentMainDATA:[],
-            ifeditComment:'',
             stopMainDATA:[]
         };
     }
@@ -41,46 +40,80 @@ clickMap = (e) =>{
       
       this.setState({'trip':temp});
     } else if(this.state.selectedMenu==='addComent'){
-      this.setState({'modal':'comment'}) ;
-      this.setState({'activeComentCoordinates':[Number(lat.toFixed(4)),Number(lng.toFixed(4))]});
-    } else if (this.state.selectedMenu==='addStop' ) {
+      // open module comment
 
+      this.setState({'modal':'comment'}) ;
+      this.setState({'activeCommentData':{
+       coordinates: [Number(lat.toFixed(4)),Number(lng.toFixed(4))],
+       comment: '',
+       modyfy: false,
+       id:  '_' + Math.random().toString(36).substr(2, 9) // generate small ID
+
+      }});
+    } else if (this.state.selectedMenu==='addStop' ) {
+       // open module addStop
       this.setState({'modal':'stop'}) ;
-      this.setState({'activeStopCoordinates':[Number(lat.toFixed(4)),Number(lng.toFixed(4))]});
+      this.setState({'activeStopData':{
+        coordinates: [Number(lat.toFixed(4)),Number(lng.toFixed(4))],
+        title: '',
+        raiting: 0,
+        comment: '',
+        modyfy: false,
+        id:  '_' + Math.random().toString(36).substr(2, 9) // generate small ID
+
+      }})
     }
    
 }
 
 reciveDataFromModalComent = (data) => {
   let temp = [...this.state.commentMainDATA];
-  
-  if (data.edited === false) {
+   
+  if (data.modyfy === false) {
     temp.push({
-      coordinates: this.state.activeComentCoordinates,
-      comment: data.text,
+      coordinates: data.coordinates,
+      comment: data.comment,
       id: data.id
   });
   } else {
      //if comment edited run this branch of code
-    let objIndex = this.state.commentMainDATA.findIndex((obj => obj.id === data.id));
-    temp[objIndex].comment = data.text
+     temp.splice(temp.findIndex(item => item.id === data.id), 1)
+     temp.push({
+      coordinates: data.coordinates,
+      comment: data.comment,
+      id: data.id
+  });
   }
    
-    this.setState({'activeComentCoordinates': ''});
+    this.setState({'activeCommentData': ''});
     this.setState({'commentMainDATA': temp});
-    this.setState({'ifeditComment': ''}); // if comment is edited delete temp  data
+ 
 
 }
 reciveDataFromModalStop = (data) => {
+ 
   let temp = [...this.state.stopMainDATA];
+  if (data.modeModyfy === false ) {
+    temp.push({
+      coordinates: data.coordinates,
+      comment: data.comment,
+      raiting: data.raiting,
+      title: data.title,
+      id: data.id
+  });
+  } else {
+    // if mode edit on
+    temp.splice(temp.findIndex(item => item.id === data.id), 1)
+    temp.push({
+      coordinates: data.coordinates,
+      comment: data.comment,
+      raiting: data.raiting,
+      title: data.title
+  });
+
+  }
   
-   temp.push({
-       coordinates: this.state.activeStopCoordinates,
-       comment: data.comment,
-       raiting: data.raiting,
-       title: data.title
-   });
-    this.setState({'activeStopCoordinates': ''});
+    this.setState({'activeStopData': ''});
     this.setState({'stopMainDATA': temp});
 
 
@@ -95,10 +128,10 @@ handleCloseModal = (value) =>{
  
   this.setState({'modal':''}); 
   if (value=== 'modalComment') {
-    this.setState({'activeComentCoordinates': ''});
-    this.setState({'ifeditComment': ''});
+    this.setState({'activeCommentData': ''});
+    
   } else if(value=== 'modalStop'){
-    this.setState({'activeStopCoordinates': ''}); 
+    this.setState({'activeStopData': ''}); 
 
 
   }
@@ -121,22 +154,44 @@ buttonClickCancel = () => {
 
 
 }
-// ***************** POPUP BUTTONS *******************
+// ***************** POPUP BUTTONS  COMMENT *******************
 
 
 buttonClickEditComment = (e) =>{
-  
-  this.setState({'modal':'comment'});
-  this.setState({'ifeditComment': this.state.commentMainDATA.find(x => x.id === e.target.id)});
+  let temp = this.state.commentMainDATA.find(x => x.id === e.target.id)
+  temp.modyfy = true;
  
+  this.setState({'activeCommentData': temp});
+  this.setState({'modal':'comment'});
 }
 
 buttonClickDeleteComment = (e) => {
   let temp = [...this.state.commentMainDATA];
+ 
+  temp.splice(temp.findIndex(item => item.id === e.target.id), 1)
 
- //stayed here 
+  this.setState({'commentMainDATA': temp});
+}
+// ***************** POPUP BUTTONS  ADD STOP *******************
+
+buttonClickEditStop = (e) => {
+  
+  let temp = this.state.stopMainDATA.find(x => x.id === e.target.id)
+   temp.modyfy = true
+  
+  this.setState({'activeStopData': temp});
+  this.setState({'modal':'stop'});
+} 
+
+buttonClickDeleteStop = (e) => {
+  let temp = [...this.state.stopMainDATA];
+ 
+  temp.splice(temp.findIndex(item => item.id === e.target.id), 1)
+
+  this.setState({'stopMainDATA': temp});
 
 }
+
   render() {
     //************ BUTTON MENU SELECTED***************
     
@@ -155,17 +210,16 @@ buttonClickDeleteComment = (e) => {
 
    
      
-      
-
+    
+  
     return(
     
        
 
 <div className="column is-main-content" >
   <h1 className="title is-5" style={{'marginTop': '1rem'}}>Draw your trip</h1>
-  {this.state.ifeditComment !== ''?  <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} editData={this.state.ifeditComment }/> :""}
-  {this.state.modal === 'comment' ? <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} editData={this.state.ifeditComment} /> :""}
-  {this.state.modal === 'stop' ? <StopInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalStop}/> : ""} 
+  {this.state.modal === 'comment' ? <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} dataEdit={this.state.activeCommentData} /> :""}
+  {this.state.modal === 'stop' ? <StopInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalStop} dataEdit={this.state.activeStopData}/> : ""} 
   <hr />
   <div className="level">
   
@@ -221,7 +275,7 @@ buttonClickDeleteComment = (e) => {
 
 })}
 
-{  Array.from(this.state.stopMainDATA).map((item, i) => {
+{   Array.from(this.state.stopMainDATA).map((item, i) => {
 
 return  (  <Marker key={Math.random()}  position={item['coordinates']}>
             <Popup>
@@ -238,14 +292,15 @@ return  (  <Marker key={Math.random()}  position={item['coordinates']}>
     </div>
   </div>
   <footer className="card-footer">
-    <a href="1" className="card-footer-item">Edit</a>
-    <a href="1"className="card-footer-item">Delete</a>
+    <button  className="link-button card-footer-item" id={item['id']} onClick={this.buttonClickEditStop} >Edit</button>
+    <button  className="link-button card-footer-item" id={item['id']} onClick={this.buttonClickDeleteStop }>Delete</button>
+
   </footer>
   </div>
             </Popup>
            </Marker>)
 
-})}
+})  }
 
 
 
