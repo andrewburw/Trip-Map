@@ -5,7 +5,7 @@ import L from 'leaflet';
 import CommentInsert from './modals/modalComment';
 import StopInsert from './modals/modalStop';
 import getDistance from './custome_modules/getDistance'; // my custom module for calculating trip length
-
+import SaveTrip from './modals/saveTrip';
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -149,7 +149,7 @@ buttonClickDelLine = () => {
 }
 
 buttonClickCancel = () => {
-   //delete all route
+   //clear all
     this.setState({'trip':[]});
 
 
@@ -220,13 +220,14 @@ buttonClickDeleteStop = (e) => {
   <h1 className="title is-5" style={{'marginTop': '1rem'}}>Draw your trip</h1>
   {this.state.modal === 'comment' ? <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} dataEdit={this.state.activeCommentData} /> :""}
   {this.state.modal === 'stop' ? <StopInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalStop} dataEdit={this.state.activeStopData}/> : ""} 
+  {this.state.modal === 'saveTrip' ? <SaveTrip tripLength={getDistance(this.state.trip)} closeModal={this.handleCloseModal} /> : ""}
   <hr />
   <div className="level">
   
     <div className="level-left">
       <div className="buttons are-small">
-        <button className="button is-success">Save Trip</button>
-        <button onClick={this.buttonClickCancel} className="button is-link">Cancel</button>
+        <button className="button is-success" onClick={()=> { this.setState({modal: 'saveTrip'})}}>Save Trip</button>
+        <button onClick={this.buttonClickCancel} className="button is-link">Clear All</button>
       </div>
     </div>
    <div className="level-right">

@@ -214,7 +214,7 @@ saveSpot = () => {
 <div className="field">
   <label className="label">Comment</label>
   <div className="control">
-    <textarea className={ textClassErr} value={this.state.comment || ''} onChange={this.handleAddText} maxLength="150" placeholder="Textarea"></textarea>
+    <textarea className={ textClassErr} value={this.state.comment || ''} onChange={this.handleAddText} maxLength="150" placeholder="Enter comment"></textarea>
   </div>
 </div>
 {textMessage}
