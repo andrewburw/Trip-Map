@@ -209,7 +209,7 @@ buttonClickDeleteStop = (e) => {
       }
 
    
-     console.log(this.state.trip.toString())
+     console.log(this.state.stopMainDATA)
     
   
     return(

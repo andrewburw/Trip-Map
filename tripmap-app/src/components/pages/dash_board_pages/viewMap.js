@@ -11,25 +11,12 @@ L.Icon.Default.mergeOptions({
 
 
 class ViewMap extends Component {
-    constructor(props) {
-        super(props);
-         this.state = {
-              data: [{
-                 author: 'Andrew',
-                 route: [[57.1431,384.6495],[57.134,384.6465],[57.1266,384.6426],[57.1197,384.6378],[57.1278,384.6132]],
-
-
-
-              }]
-
-
-          }
-      }
+   
 
 
   render(){
       
-    console.log(this.props.location.state)
+    console.log(this.props.location.state.data)
     
     return(
         <div className="column is-main-content" >
@@ -38,16 +25,26 @@ class ViewMap extends Component {
           <div className="level">
   
   <div className="level-left">
-  <div><span className="title is-5">Jurkalne - Riga</span> <small>@johnsmith</small> <small>31m</small></div>
+    <div><span className="title is-5">{this.props.location.state.data.title}</span> 
+    <small>@{this.props.location.state.data.author}</small> <small>31m</small>
+   
+    </div>
+   
+   
   </div>
+  
  <div className="level-right">
- <span className="is-size-6 is-family-monospace">Length - 20km</span>
+ <p className="is-size-7 is-family-monospace">Length - <span className="has-text-weight-bold">{this.props.location.state.data.routeLength}km </span>,
+ Raiting - <span className="has-text-weight-bold">{this.props.location.state.data.rating} </span>,
+ Transport - <span className="has-text-weight-bold">{this.props.location.state.data.by}</span></p>
+
 </div>
 </div>
+<span></span>
 <div>
 
 <Map
-    center={[57.1273,384.6539]}
+    center={this.props.location.state.data.route[0]}
     zoom={13}
    
   >
@@ -55,11 +52,56 @@ class ViewMap extends Component {
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     />
+   <Polyline key={124} positions={this.props.location.state.data.route} color={'red'} />
+
+ { Array.from(this.props.location.state.data.stopData).map((item, i) => {
+
+return  (  <Marker key={Math.random()}  position={item['coordinates']}>
+            <Popup>
+            <div className="card">
  
+  <div className="card-content">
+    <div className="content">
+      <h1 className="title is-4">{item['title']}</h1>
+      <p className="has-text-weight-semibold">User Raiting: {item['raiting']}</p>
+      <p className="has-text-weight-semibold">User Comment:</p>
+      <p> {item['comment']}</p>
+      <br />
+      <time dateTime="2016-1-1">11:09 PM - 1 Jan 2020</time>
+    </div>
+  </div>
+ 
+  </div>
+            </Popup>
+           </Marker>)
+
+})  }
+ { Array.from(this.props.location.state.data.comentData).map((item, i) => {
+
+return  (  <Marker key={Math.random()}  position={item['coordinates']}>
+             <Popup> <div className="card">
+
+             <div className="card-content">
+                <div className="content">
+                    <h1 className="title is-4">User Comment</h1>
+                       <p> {item['comment']}</p>
+                        <br />
+                   <time dateTime="2016-1-1">11:09 PM - 1 Jan 2020</time>
+                </div>
+              </div>
+
+</div></Popup>
+           </Marker>)
+
+})}
+
+
+
+
 </Map>
+<br />
 
-
-
+<p  className="is-size-6"> {this.props.location.state.data.comment}</p>
 </div>
 
    </div> 
