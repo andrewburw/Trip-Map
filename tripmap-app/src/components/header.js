@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Logo from './img/trip-logo.png';
-
+import { Link } from "react-router-dom";
 
 class Header extends Component {
 
@@ -45,9 +45,9 @@ class Header extends Component {
                 Docs
               </a>
               <div className="navbar-dropdown is-right">
-                <a className="navbar-item" href="/">
-                  Overview
-                </a>
+              <Link to="/registerpage"><div className="navbar-item" href="/">
+                  Register
+                </div></Link>
                 <a className="navbar-item" href="/">
                   Modifiers
                 </a>
@@ -71,7 +71,7 @@ class Header extends Component {
              
              
             </div>
-            <div className="buttons"> <button className="button is-dark is-outlined">Login</button></div>
+            <div className="buttons">  <Link to="/loginpage"><button className="button is-dark is-outlined">Login</button></Link></div>
           </div>
         </div>
       </nav> 
