@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Logo from '../img/trip.png';
+import {Redirect} from "react-router-dom";
 
 class RegisterPage extends Component {
     constructor(props) {
@@ -18,7 +19,8 @@ class RegisterPage extends Component {
            },
           serverError: null,
           serverMsg: '',
-          protectButtn: false
+          protectButtn: false,
+          registerSuccess: false
           
           };
   
@@ -27,15 +29,78 @@ class RegisterPage extends Component {
 
 handleSubmit = () => {
 
+     
 
-  console.log(this.state)
- this.setState({serverError: false})
- this.setState({serverMsg: 'LOGINED'})
- this.setState({protectButtn: true})
+  // ************** data send to server fnc *****************
+
+  const dataToSend = {
+   password: this.state.pass1,
+   email: this.state.email,
+   name: this.state.name
+    }
+   
+    this.setState({'serverError':null}); // turn off massage "Good, password match!"
+    this.setState({protectButtn: true}) // protect button register from multiply press
+
+
+
+    fetch('http://localhost:3001/api/auth/register', {
+   method: 'POST',
+   headers: {
+     'Content-Type': 'application/json;charset=utf-8'
+     
+   },
+   body: JSON.stringify(dataToSend)
+ 
+   }).then(response => response.json()
+      
+   ).then(data => {
+    
+    if (data.errorStatus === true) {
+      this.setState({protectButtn: false})  
+      this.setState({serverError: true});
+      this.setState({serverMsg: data.messege});
+ 
+ 
+        } else if(typeof data.errors === "object" ) {
+      
+        let temp = [];
+      this.setState({serverError: true});
+      this.setState({protectButtn: false}) ; 
+           
+      Array.from(data.errors).map((item, i) => { 
+            
+        temp.push(item['msg']);
+        return '';
+      })
+
+      this.setState({serverMsg: temp});
+
+
+
+      } 
+    // if everything is ok (no errors.)
+
+    this.setState({serverError: false});
+    this.setState({serverMsg: 'Register success!'});
+    
+    setTimeout(() => {
+      this.setState({registerSuccess: true}); // redirect occurs after the message about successful registration
+    }, 1500);
+
+
+
+   }).catch(err => {
+      console.error(err)
+      this.setState({serverError: true});
+      this.setState({serverMsg: err.toString()});
+   });
+
+
 }
 
 handleChange = (event) =>{
-      
+  
 	  
 
         if (event.target.id === 'email') {
@@ -70,12 +135,13 @@ checkInputData = (data,feild) => {
 		// at least one number, one lowercase and one uppercase letter
 		// at least six characters
 		if (feild==='pass1') {
+     
 			rePass.test(data)  ?	erorsData['password1'] = false : erorsData['password1'] = true;
 			
 			
 		} else if(feild==='pass2'){
 			rePass.test(data)  ?	erorsData['password2'] = false : erorsData['password2'] = true;
-
+    
 		}
 		  // check if both passwords match
 		  setTimeout(() => {
@@ -99,8 +165,8 @@ checkInputData = (data,feild) => {
 		 
 	  
 	} else if(feild === 'name'){
-
-		reName.test(data)  ?	erorsData['name'] = false : erorsData['name'] = true;
+    
+	 reName.test(data)  ?	erorsData['name'] = false : erorsData['name'] = true;
 	   
         
 	}
@@ -161,15 +227,21 @@ checkInputData = (data,feild) => {
     if (Object.values(this.state.errorsInField).indexOf(true) < 0 && Object.values(this.state.errorsInField).indexOf(null) < 0 && !this.state.protectButtn) { 
 		buttnSend = <div className="button is-info is-rounded is-outlined " onClick={this.handleSubmit}>Register</div>	
 	}
+  // --------- redirect of siccess login ---
 
-
+   if (this.state.registerSuccess) {
+      
+    return <Redirect to='/loginpage' />
+    
+     
+   }
     return(
-        <div className="hero is-primary">
+        <div className="hero is-primary is-large">
       <div className="hero-body reg-main">
         <h1 className="title has-text-centered is-size-2">Register your account</h1>
         <div className="columns is-centered">
          
-          <div className="column is-half">
+          <div className="column is-one-third">
             <div className="notification is-light">
               <figure className="image container is-96x96">
               <img src={Logo} alt="Manage your trips" width="50" height="50" />

@@ -10,11 +10,11 @@ class LoginPage extends Component {
     
     
     return(
-        <div className="hero is-primary">
-      <div className="hero-body login-main">
+        <div className="hero is-primary is-large">
+      <div className="hero-body login-main  ">
         <h1 className="title has-text-centered is-size-2">Login</h1>
-        <div className="columns is-centered">
-          <div className="column is-half">
+        <div className="columns is-centered ">
+          <div className="column is-one-third">
             <div className="notification is-light">
               <figure className="image container is-96x96">
               <img src={Logo} alt="Manage your trips" width="50" height="50" />
@@ -37,7 +37,11 @@ class LoginPage extends Component {
                   </span>
                 </p>
               </div>
+
+
+              <div className="notification is-danger">Server Error</div>
               <a className="button is-info is-rounded is-outlined " href="1">Login</a>
+           
             </div>
           </div>
         </div>
