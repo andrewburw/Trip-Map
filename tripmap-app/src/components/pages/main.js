@@ -20,7 +20,7 @@ class MainPage extends Component {
             <h2 className="subtitle">
               Manage your Adventures
             </h2>
-           <div class="buttons is-centered">
+           <div className="buttons is-centered">
               <button className="button is-light is-outlined">Log in</button>
               <Link to="/dashboard"><button className="button is-light is-outlined">Join US</button></Link>
               </div>

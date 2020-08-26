@@ -9,36 +9,29 @@ import DashBoard from './components/pages/dashBoard';
 import MainPage from './components/pages/main';
 import LoginPage from './components/pages/loginPage';
 import RegisterPage from './components/pages/registerPage';
+import Trips from './components/pages/viewAllUserTrips';
+import ViewUnregistredMap from './components/pages/viewMap_unregistred';
 import Header from './components/header';
 import Footer from './components/footer';
+
 import './App.css';
 
 function App() {
   return (
     
 
-        <Router>
-<Header />
-          <Switch>
-
-          <Route exact path="/">
-            <MainPage />
-          </Route>
-
-
-          <Route path="/dashboard">
-            <DashBoard />
-          </Route>
-          <Route path="/loginpage">
-            <LoginPage />
-          </Route>
-          <Route path="/registerpage">
-            <RegisterPage />
-          </Route>
-        </Switch>
-
-        <Footer />
-          </Router>
+<Router>
+   <Header />
+      <Switch>
+          <Route exact path="/" component={MainPage} />
+          <Route path="/dashboard" component={DashBoard} />
+          <Route path="/loginpage" component={LoginPage} />
+          <Route path="/registerpage" component={RegisterPage} />
+          <Route path="/trips"  component={Trips} />
+          <Route path="/viewmap/:id" component={ViewUnregistredMap} />
+     </Switch>
+   <Footer />
+</Router>
     
   );
 }

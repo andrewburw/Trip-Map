@@ -78,8 +78,8 @@ handleSubmit = () => {
 
 
 
-      } 
-    // if everything is ok (no errors.)
+      } else {
+          // if everything is ok (no errors.)
 
     this.setState({serverError: false});
     this.setState({serverMsg: 'Register success!'});
@@ -89,6 +89,9 @@ handleSubmit = () => {
     }, 1500);
 
 
+
+      }
+   
 
    }).catch(err => {
       console.error(err)

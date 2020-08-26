@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import {Redirect} from "react-router-dom";
 
 
 
@@ -18,8 +18,10 @@ class SaveTrip extends Component {
                     tripRate: ''
 
                  },
-                sendedDataSuccess: '',
-                dataSending: true   // protect from multyply pressing btn send
+                dataSending: true ,  // protect from multyply pressing btn send,
+                serverError: null,
+                serverMsg: null,
+                redirect: false
                  
 
            }
@@ -30,7 +32,7 @@ checkInput = (val,field) => {
         let result = {...this.state.errors};
           
         
-          if (field === 'title') {
+          if (field === 'tripName') {
             
            // const reg =  /^\w+$/;
               const reg = /^[a-zA-Z0-9_\- ]{6,20}$/
@@ -65,26 +67,104 @@ checkInput = (val,field) => {
         // closeing modal
  }
  handleChange = (e) => {
-     let id = e.target.id
-    this.checkInput(e.target.value,id)
-    this.setState({id : e.target.value});
+     
+     const id = e.target.id;
   
+    this.checkInput(e.target.value,id)
+    this.setState({[id] : e.target.value});
+    
 }
  
 
 
 handleSubmit = () => {
-   this.setState({sendedDataSuccess: true})
-   this.setState({dataSending: false})
-    setTimeout(() => {
-        this.handleClickClose()
-    },3000);
+    
 
+  // ************** data send to server fnc *****************
+
+  const dataToSend = {
+    tripName: this.state.tripName,
+    tripBy: this.state.tripBy,
+    tripDescrp:  this.state.tripDescrp,
+    tripRate: this.state.tripRate,
+    tripDistance: this.props.data.distance,
+    tripComents: this.props.data.tripComents,
+    tripRoute: this.props.data.tripRoute,
+    tripStops: this.props.data.tripStop,
+    dateAdded: new Date().toLocaleString()
+
+
+     }
+  
+     console.log(dataToSend)
+     this.setState({dataSending: false}) // protect button send from multiply press
+ 
+ 
+ 
+     fetch('http://localhost:3001/api/newtrip', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+      
+    },
+    body: JSON.stringify(dataToSend)
+  
+    }).then(response => response.json()
+       
+    ).then(data => {
+      
+    if (data.errorStatus === true) {
+      
+       this.setState({dataSending: true});  // protect button
+       this.setState({serverError: true});
+       this.setState({serverMsg: data.messege});
+  
+  
+    } else if(typeof data.errors === "object" ) {
+       
+         let temp = [];
+        this.setState({serverError: true});
+        this.setState({dataSending: true}); // protect button
+            
+       Array.from(data.errors).map((item, i) => { 
+             
+         temp.push(item['msg']);
+         return '';
+       })
+ 
+       this.setState({serverMsg: temp});
+ 
+ 
+ 
+    } else {
+          // if everything is ok (no errors.)
+        
+         this.setState({dataSending: false}); // protect button
+         this.setState({serverError: false});
+         this.setState({serverMsg: 'Trip Saved!'});
+     
+         setTimeout(() => {
+           this.setState({redirect: true}); // redirect occurs after the message about successful registration
+         }, 1500);
+ 
+       }
+    
+ 
+ 
+    }).catch(err => {
+       console.error(err)
+      this.setState({serverError: true});
+      this.setState({serverMsg: err.toString()});
+    });
+ 
+   
+   
+   
 }
 
 
   render(){
-
+    
      // ************* ERRORS *******************
     let errorsViz = {
         inputSuccessclass : 'input is-success',
@@ -141,13 +221,19 @@ if (!Object.values(this.state.errors).includes(true) && !Object.values(this.stat
 
 // ******************** SENDED MSG **************************
 let msg = '';
-if (this.state.sendedDataSuccess) {
-    msg = <div className="notification is-success">Data sended succesfully. </div>
+if (this.state.serverError) {
+    msg = <div className="notification is-danger">{this.state.serverMsg}</div>
 }
-if (this.state.sendedDataSuccess === false) {
-    msg = <div className="notification is-danger">Error in data send. </div>
+if (this.state.serverError === false) {
+    msg = <div className="notification is-success">{this.state.serverMsg}</div> 
 }  
 
+if (this.state.redirect) {
+      
+  return <Redirect to='/dashboard/viewtrips' />
+  
+   
+ }
 
     return(
         <div className="modal is-active">
@@ -165,7 +251,7 @@ if (this.state.sendedDataSuccess === false) {
            <div className="field">
   <label className="label">Your Trip Name</label>
   <div className="control">
-    <input className={ titleClass} type="text" id="title" onChange={this.handleChange} maxLength="30" placeholder="Enter Trip Name" />
+    <input className={ titleClass} type="text" id="tripName" onChange={this.handleChange} maxLength="30" placeholder="Enter Trip Name" />
   </div>
   {titleMsg}
 </div>
@@ -221,7 +307,7 @@ if (this.state.sendedDataSuccess === false) {
 <div className="field">
   <label className="label">Trip Length</label>
   <div className="control">
-    <p>{this.props.tripLength} km.</p>
+    <p>{this.props.data.distance} km.</p>
   </div>
  
 </div>

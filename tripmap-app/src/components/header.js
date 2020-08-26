@@ -48,9 +48,9 @@ class Header extends Component {
               <Link to="/registerpage"><div className="navbar-item" href="/">
                   Register
                 </div></Link>
-                <a className="navbar-item" href="/">
-                  Modifiers
-                </a>
+                <Link to="/trips"><div className="navbar-item" href="/">
+                  View User Trips
+                </div></Link>
                 <a className="navbar-item" href="/">
                   Columns
                 </a>

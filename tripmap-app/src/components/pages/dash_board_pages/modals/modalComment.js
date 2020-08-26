@@ -47,7 +47,7 @@ handleAddText = (e) => {
 
   render(){
 
-    console.log(this.props.dataEdit)
+    
       
     return(
         <div className="modal is-active">

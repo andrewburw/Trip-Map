@@ -16,7 +16,7 @@ class ViewMap extends Component {
 
   render(){
       
-    console.log(this.props.location.state.data)
+   
     
     return(
         <div className="column is-main-content" >
@@ -25,8 +25,8 @@ class ViewMap extends Component {
           <div className="level">
   
   <div className="level-left">
-    <div><span className="title is-5">{this.props.location.state.data.title}</span> 
-    <small>@{this.props.location.state.data.author}</small> <small>31m</small>
+    <div><span className="title is-5">{this.props.location.state.data.tripName} </span> 
+    <small>@{this.props.location.state.data.tripAuthor} </small> <small>{this.props.location.state.data.dateAdded}</small>
    
     </div>
    
@@ -34,9 +34,9 @@ class ViewMap extends Component {
   </div>
   
  <div className="level-right">
- <p className="is-size-7 is-family-monospace">Length - <span className="has-text-weight-bold">{this.props.location.state.data.routeLength}km </span>,
- Raiting - <span className="has-text-weight-bold">{this.props.location.state.data.rating} </span>,
- Transport - <span className="has-text-weight-bold">{this.props.location.state.data.by}</span></p>
+ <p className="is-size-7 is-family-monospace">Length - <span className="has-text-weight-bold">{this.props.location.state.data.tripDistance}km </span>,
+ Raiting - <span className="has-text-weight-bold">{this.props.location.state.data.tripRate} </span>,
+ Transport - <span className="has-text-weight-bold">{this.props.location.state.data.tripBy}</span></p>
 
 </div>
 </div>
@@ -44,7 +44,7 @@ class ViewMap extends Component {
 <div>
 
 <Map
-    center={this.props.location.state.data.route[0]}
+    center={this.props.location.state.data.tripRoute[0]}
     zoom={13}
    
   >
@@ -52,9 +52,9 @@ class ViewMap extends Component {
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     />
-   <Polyline key={124} positions={this.props.location.state.data.route} color={'red'} />
+   <Polyline key={124} positions={this.props.location.state.data.tripRoute} color={'red'} />
 
- { Array.from(this.props.location.state.data.stopData).map((item, i) => {
+ { Array.from(this.props.location.state.data.tripStops).map((item, i) => {
 
 return  (  <Marker key={Math.random()}  position={item['coordinates']}>
             <Popup>
@@ -76,7 +76,7 @@ return  (  <Marker key={Math.random()}  position={item['coordinates']}>
            </Marker>)
 
 })  }
- { Array.from(this.props.location.state.data.comentData).map((item, i) => {
+ { Array.from(this.props.location.state.data.tripComents).map((item, i) => {
 
 return  (  <Marker key={Math.random()}  position={item['coordinates']}>
              <Popup> <div className="card">
@@ -86,7 +86,7 @@ return  (  <Marker key={Math.random()}  position={item['coordinates']}>
                     <h1 className="title is-4">User Comment</h1>
                        <p> {item['comment']}</p>
                         <br />
-                   <time dateTime="2016-1-1">11:09 PM - 1 Jan 2020</time>
+                  
                 </div>
               </div>
 
@@ -101,7 +101,7 @@ return  (  <Marker key={Math.random()}  position={item['coordinates']}>
 </Map>
 <br />
 
-<p  className="is-size-6"> {this.props.location.state.data.comment}</p>
+<p  className="is-size-6"> {this.props.location.state.data.tripDescrp}</p>
 </div>
 
    </div> 

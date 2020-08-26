@@ -11,7 +11,7 @@ class Footer extends Component {
       
     
     return(
-        <div className="hero-foot">
+        <div className="hero-foot footer_cust_css">
         <nav className="tabs">
           <div className="container">
             <ul>

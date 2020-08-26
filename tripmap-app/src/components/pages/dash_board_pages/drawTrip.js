@@ -209,7 +209,7 @@ buttonClickDeleteStop = (e) => {
       }
 
    
-     console.log(this.state.stopMainDATA)
+     
     
   
     return(
@@ -220,7 +220,7 @@ buttonClickDeleteStop = (e) => {
   <h1 className="title is-5" style={{'marginTop': '1rem'}}>Draw your trip</h1>
   {this.state.modal === 'comment' ? <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} dataEdit={this.state.activeCommentData} /> :""}
   {this.state.modal === 'stop' ? <StopInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalStop} dataEdit={this.state.activeStopData}/> : ""} 
-  {this.state.modal === 'saveTrip' ? <SaveTrip tripLength={getDistance(this.state.trip)} closeModal={this.handleCloseModal} /> : ""}
+  {this.state.modal === 'saveTrip' ? <SaveTrip  data={{distance: getDistance(this.state.trip),tripRoute: this.state.trip,tripStop: this.state.stopMainDATA,tripComents: this.state.commentMainDATA}} closeModal={this.handleCloseModal} /> : ""}
   <hr />
   <div className="level">
   

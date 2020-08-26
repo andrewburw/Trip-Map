@@ -46,3 +46,10 @@
   background-color: white;
   background-position: 0 35%;
 }
+
+.footer_cust_css {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
