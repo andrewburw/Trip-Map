@@ -11,6 +11,7 @@ import LoginPage from './components/pages/loginPage';
 import RegisterPage from './components/pages/registerPage';
 import Trips from './components/pages/viewAllUserTrips';
 import ViewUnregistredMap from './components/pages/viewMap_unregistred';
+import UserPage from './components/pages/viewUser';
 import Header from './components/header';
 import Footer from './components/footer';
 
@@ -29,6 +30,7 @@ function App() {
           <Route path="/registerpage" component={RegisterPage} />
           <Route path="/trips"  component={Trips} />
           <Route path="/viewmap/:id" component={ViewUnregistredMap} />
+          <Route path="/user" component={UserPage} />
      </Switch>
    <Footer />
 </Router>

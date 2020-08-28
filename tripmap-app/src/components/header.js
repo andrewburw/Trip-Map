@@ -11,7 +11,7 @@ class Header extends Component {
       
     
     return(
-        <nav className="navbar is-transparent">
+        <nav className="navbar is-transparent ">
         <div className="navbar-brand">
           <a className="navbar-item" href="/">
             <img src={Logo} alt="Manage your trips" width="120" height="50" />

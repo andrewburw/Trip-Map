@@ -10,12 +10,14 @@ class RegisterPage extends Component {
           pass1: '', 
           pass2: '',
           name: '',
+          about: '',
           errorsInField: {
               email:null,
               password1:null,
               password2:null,
               passMatchEror: null,
-              name: null
+              name: null,
+              about: null
            },
           serverError: null,
           serverMsg: '',
@@ -36,7 +38,8 @@ handleSubmit = () => {
   const dataToSend = {
    password: this.state.pass1,
    email: this.state.email,
-   name: this.state.name
+   name: this.state.name,
+   about: this.state.about
     }
    
     this.setState({'serverError':null}); // turn off massage "Good, password match!"
@@ -102,22 +105,12 @@ handleSubmit = () => {
 
 }
 
-handleChange = (event) =>{
+handleChange = (e) =>{
+  const id = e.target.id;
   
-	  
-
-        if (event.target.id === 'email') {
-         this.setState({email:event.target.value});
- 
-        } else if(event.target.id === 'pass1'){
-         this.setState({pass1:event.target.value});
- 
-        }else if(event.target.id === 'pass2'){
-         this.setState({pass2:event.target.value});
-        }else if(event.target.id === 'name'){
-         this.setState({name:event.target.value});
-        }
-       this.checkInputData(event.target.value,event.target.id) 
+  
+  this.setState({[id] : e.target.value});
+       this.checkInputData(e.target.value,e.target.id) 
 }
 
 checkInputData = (data,feild) => {
@@ -172,9 +165,14 @@ checkInputData = (data,feild) => {
 	 reName.test(data)  ?	erorsData['name'] = false : erorsData['name'] = true;
 	   
         
-	}
+	} else if (feild === 'about') {
+    
+    data.length > 5 ? erorsData['about'] = false : erorsData['about'] = true;
+
+
+  } 
 	this.setState({errorsInField:erorsData});
-	} 
+} 
 
 
   render(){
@@ -229,7 +227,15 @@ checkInputData = (data,feild) => {
 
     if (Object.values(this.state.errorsInField).indexOf(true) < 0 && Object.values(this.state.errorsInField).indexOf(null) < 0 && !this.state.protectButtn) { 
 		buttnSend = <div className="button is-info is-rounded is-outlined " onClick={this.handleSubmit}>Register</div>	
-	}
+  }
+  // ------- ABOUT CHECK -------
+
+  let aboutClassErr = 'textarea';
+  let aboutMsg = '';
+  if (this.state.errorsInField.about ) {
+    aboutClassErr = 'textarea is-danger';
+    aboutMsg = <p className="help is-danger">Min length 6, max length 150</p>
+  } 
   // --------- redirect of siccess login ---
 
    if (this.state.registerSuccess) {
@@ -281,6 +287,14 @@ checkInputData = (data,feild) => {
                  
                 </p>
               </div>
+
+              <div className="field">
+                <label className="label">About you</label>
+                  <div className="control">
+                    <textarea className={aboutClassErr} id="about" onChange={this.handleChange}  maxLength="150" placeholder="Enter msg, max length 150 sybols"></textarea>
+                  </div>
+                   {aboutMsg}  
+             </div>
 
               <div className="field">
                 <div className="control">

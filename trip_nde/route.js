@@ -42,21 +42,7 @@ const jwt = require('jsonwebtoken');
 
 });
 
-/*
 
-router.get('/trips', async (req, res, next) => {
-  try {
-    const trips = await Trips.find( { })
-   
-    res.json(trips);
-   
-  } catch (e) {
-          
-    res.status(500).json({message: "Somthing wrong!"});
-    next(e) 
-  }
-})
-*/
 
 router.get('/trips/:id', async (req, res, next) => {
   try {

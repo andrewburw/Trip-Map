@@ -28,8 +28,3 @@ let tripSchema = new mongoose.Schema({
 
 
 module.exports = mongoose.model('trip',tripSchema);
-
-
-
-//   tripComments: [{coordinates: Array,
-//comment: String}],

@@ -20,7 +20,7 @@ class DashBoard extends Component {
     
     
     return(
-      <div className="container">
+      <div className="container ">
   
    <div className="columns is-fullheight">
      <div className="column is-2 is-sidebar-menu is-hidden-mobile">
@@ -38,6 +38,8 @@ class DashBoard extends Component {
   <ul className="menu-list">
     <li><a href="/">Boat Trips</a></li>
     <li><a href="/">Walk Trips</a></li>
+    <li><a href="/">Planed Trips</a></li>
+    <li><a href="/">Complited Trips</a></li>
     <li><Link to="/dashboard/viewtrips">All Trips</Link></li>
   </ul>
   <p className="menu-label">

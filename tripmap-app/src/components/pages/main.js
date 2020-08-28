@@ -11,7 +11,7 @@ class MainPage extends Component {
       
     
     return(
-        <section className="hero is-success is-fullheight-with-navbar  is-bold">
+        <section className="hero is-success is-fullheight  is-bold">
         <div className="hero-body bg-main">
           <div className="container has-text-centered ">
             <h1 className="title is-1">
