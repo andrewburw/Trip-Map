@@ -180,15 +180,9 @@ saveSpot = () => {
       
 <div className="field">
   <label className="label">Spot Title</label>
-  <div className="control has-icons-left has-icons-right">
-    <input className={inputClasserr} type="text"   value={this.state.title || ''} maxLength="30" onChange={this.handleAddTitle} placeholder="Title input"  />
-    <span className="icon is-small is-left">
-      <i className="fas fa-user"></i>
-    </span>
-    <span className="icon is-small is-right">
-      <i className="fas fa-check"></i>
-    </span>
-  </div>
+  <div className="control">
+    <input className={inputClasserr} type="text"   value={this.state.title || ''} maxLength="30" onChange={this.handleAddTitle} placeholder="Title input" autoComplete="off" />
+      </div>
 </div>
  {inputMessage}
 

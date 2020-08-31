@@ -4,11 +4,60 @@ import { Link } from "react-router-dom";
 
 class Header extends Component {
 
-    state={}
+    state={
+      authStatus: ''
+    
+    }
 
-
-  render() {
+    componentDidMount() {
+      // check if user alrady loged in 
+       const auth = 'Bearer ' + localStorage.getItem('token');
+     
+       fetch('http://localhost:3001/api/auth/check', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'Authorization': auth
+        },
+        body: JSON.stringify({test: 'test'})
       
+      }).then(response => response.json()
+         
+      ).then(data => {
+          console.log(data)
+         if (data.status) { // if logged in 
+         
+          this.setState({authStatus: true});
+          
+           
+         } else {
+   
+           this.setState({authStatus: false});
+           localStorage.removeItem('token');
+           localStorage.removeItem('user_name');
+           
+         }
+       
+       
+      }).catch(err => {
+         console.error(err)
+         
+      });
+   
+   }
+   
+   signOut = () => {
+   
+     localStorage.removeItem('token');
+     window.location.reload();
+   
+   }
+  render() {
+       
+        let loginBtn = <div className="buttons">  <Link to="/loginpage"><button className="button is-dark is-outlined">Login</button></Link></div>
+      if (this.state.authStatus) {
+        loginBtn = <div className="buttons"><button className="button is-dark is-outlined" onClick={this.signOut}> Log Out</button></div>
+      }
     
     return(
         <nav className="navbar is-transparent ">
@@ -51,9 +100,9 @@ class Header extends Component {
                 <Link to="/trips"><div className="navbar-item" href="/">
                   View User Trips
                 </div></Link>
-                <a className="navbar-item" href="/">
-                  Columns
-                </a>
+                <Link to="/dashboard"><div className="navbar-item" href="/">
+                  Dash Board
+                </div></Link>
                 <a className="navbar-item" href="/">
                   Layout
                 </a>
@@ -71,7 +120,7 @@ class Header extends Component {
              
              
             </div>
-            <div className="buttons">  <Link to="/loginpage"><button className="button is-dark is-outlined">Login</button></Link></div>
+           {loginBtn}
           </div>
         </div>
       </nav> 

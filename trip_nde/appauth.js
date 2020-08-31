@@ -98,10 +98,10 @@ router.post('/login',[
 
 });
 
-router.post('/test',verifyToken,function(req,res){
+router.post('/check',verifyToken,function(req,res){
 
 
-  jwt.verify(req.token,'drive faster then you', (err,authData)=>{
+  jwt.verify(req.token,config.get('keycript'), (err,authData)=>{
 
     if (err) {
       res.json({

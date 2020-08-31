@@ -10,23 +10,60 @@ L.Icon.Default.mergeOptions({
 });
 
 
-class ViewMap extends Component {
-   
+class ViewMapUnregistred extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: '',
+            serverError: false,
+            serverMsg: ''
+
+          };
+        }
 
 
+
+
+
+componentDidMount(){
+ 
+   console.log(this.props.location.state.data._id)
+
+}
   render(){
       
-   
-    
+       let render = null;
+
+       if (this.state.serverError) {
+        render =  <div className="notification is-danger">{this.state.serverMsg}</div>
+       } else if (false) {
+        render =  <progress className="progress is-small is-info" max="100">60%</progress>
+       } else {
+         render = <MapRender data={this.props.location.state.data} />
+       }
+
     return(
-        <div className="column is-main-content" >
+        <div className="container">
+            {render }  
+        </div> 
+  );
+    }
+}
+
+
+function MapRender(props) {
+
+
+    return (
+      
+            <div className="column is-main-content" >
             <h1 className="title is-5" style={{'marginTop': '1rem'}}>View Map</h1>
           <hr />
           <div className="level">
   
   <div className="level-left">
-    <div><span className="title is-5">{this.props.location.state.data.tripName} </span> 
-    <small>@{this.props.location.state.data.tripAuthor} </small> <small>{this.props.location.state.data.dateAdded}</small>
+    <div><span className="title is-5">{props.data.tripName} </span> 
+    <small>@{props.data.tripAuthor} </small> <small>{props.data.dateAdded}</small>
    
     </div>
    
@@ -34,9 +71,9 @@ class ViewMap extends Component {
   </div>
   
  <div className="level-right">
- <p className="is-size-7 is-family-monospace">Length - <span className="has-text-weight-bold">{this.props.location.state.data.tripDistance}km </span>,
- Raiting - <span className="has-text-weight-bold">{this.props.location.state.data.tripRate} </span>,
- Transport - <span className="has-text-weight-bold">{this.props.location.state.data.tripBy}</span></p>
+ <p className="is-size-7 is-family-monospace">Length - <span className="has-text-weight-bold">{props.data.tripDistance}km </span>,
+ Raiting - <span className="has-text-weight-bold">{props.data.tripRate} </span>,
+ Transport - <span className="has-text-weight-bold">{props.data.tripBy}</span></p>
 
 </div>
 </div>
@@ -44,17 +81,17 @@ class ViewMap extends Component {
 <div>
 
 <Map
-    center={this.props.location.state.data.tripRoute[0]}
+    center={props.data.tripRoute[0] || [56.953592, 24.226905]}
     zoom={13}
    
   >
     <TileLayer
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    />
-   <Polyline key={124} positions={this.props.location.state.data.tripRoute} color={'red'} />
+    />''
+   <Polyline key={124} positions={props.data.tripRoute } color={'red'} />
 
- { Array.from(this.props.location.state.data.tripStops).map((item, i) => {
+ { Array.from(props.data.tripStops || []).map((item, i) => {
 
 return  (  <Marker key={Math.random()}  position={item['coordinates']}>
             <Popup>
@@ -62,12 +99,12 @@ return  (  <Marker key={Math.random()}  position={item['coordinates']}>
  
   <div className="card-content">
     <div className="content">
-      <h1 className="title is-4">{item['title']}</h1>
+      <h1 className="title is-4">Trip Stop</h1>
+      <p className="has-text-weight-semibold">Stop Name: {item['title']}</p>
       <p className="has-text-weight-semibold">User Raiting: {item['raiting']}</p>
       <p className="has-text-weight-semibold">User Comment:</p>
       <p> {item['comment']}</p>
-      <br />
-      <time dateTime="2016-1-1">11:09 PM - 1 Jan 2020</time>
+     
     </div>
   </div>
  
@@ -76,7 +113,7 @@ return  (  <Marker key={Math.random()}  position={item['coordinates']}>
            </Marker>)
 
 })  }
- { Array.from(this.props.location.state.data.tripComents).map((item, i) => {
+ { Array.from(props.data.tripComents || []).map((item, i) => {
 
 return  (  <Marker key={Math.random()}  position={item['coordinates']}>
              <Popup> <div className="card">
@@ -101,12 +138,12 @@ return  (  <Marker key={Math.random()}  position={item['coordinates']}>
 </Map>
 <br />
 
-<p  className="is-size-6"> {this.props.location.state.data.tripDescrp}</p>
+<p  className="is-size-6"> {props.data.tripDescrp}</p>
 </div>
+</div> 
+     
+ 
+    );    
 
-   </div> 
-  );
-    }
-}
-
-export default  ViewMap;
+  }
+export default  ViewMapUnregistred;

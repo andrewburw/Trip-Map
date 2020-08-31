@@ -4,15 +4,18 @@ const Trips = require('./db_schemas/tripSchema.js');
 const User = require('./db_schemas/users.js');
 const {check, validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken');
+const config = require('config');
+const mongoose = require('mongoose');
 //const checkAntiSpamDate = require('./custome_modules/dateChecker.js');
 
  //res.header("Access-Control-Allow-Origin", "*"); 
 
- router.post('/newtrip',[
+ router.post('/newtrip',verifyToken,[
   check('tripName','Minimum Title length 6 symbols').isLength({ min: 6 , max: 20}),
 
 ], async (req,res)=>{
-  try {
+  try { 
+  const tkn =  jwt.verify(req.token,config.get('keycript')) 
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -21,16 +24,22 @@ const jwt = require('jsonwebtoken');
     message: 'Entered wrong data!'
     })
   }
-   const {tripName,dateAdded, tripBy,tripDescrp,tripRate,tripDistance,tripComents,tripRoute,tripStops} = req.body; 
-   const tripAuthor = 'Andrew'
-   const trip = new Trips({tripName, tripBy,tripDescrp,tripRate,tripRoute,tripDistance, tripComents,tripStops,dateAdded,tripAuthor});
-    
-   await trip.save();
+   const {tripName,dateAdded, tripBy,tripDescrp,tripRate,tripDistance,tripComents,tripRoute,tripStops,tripStatus,tripAuthor} = req.body; 
+ 
+   const trip = new Trips({tripAuthor,tripName, tripBy,tripDescrp,tripRate,tripRoute,tripDistance, tripComents,tripStops,dateAdded,tripStatus});
+   let tripID = ''; 
+
+
+   await trip.save().then((trip) => { tripID = trip._id});
    
+   console.log(tripID)
+
+   await User.findOneAndUpdate({_id: tkn.userID}, {$addToSet: {trips: tripID }},{new: true});
   // throw new Error('sample')
-   res.status(201).json({message: 'User saved!',errorStatus:false})
 
+   res.status(201).json({message: 'Trip saved!',errorStatus:false})
 
+ 
   
  
 
@@ -58,16 +67,46 @@ router.get('/trips/:id', async (req, res, next) => {
    res.json(trip);
 
   } catch (e) {
-      console.log(e)
+     
     res.status(500).json({message: "Somthing wrong!"});
     next(e) 
   }
 })
 
+router.get('/usertrips',verifyToken, async (req, res, next) => {
+  try {
+    const tkn =  jwt.verify(req.token,config.get('keycript')) 
+   
+    
+   const user = await User.find({_id:tkn.userID})
+   const tripResults = await Trips.find({_id: user[0].trips})
 
+   res.json(tripResults);
 
+  } catch (e) {
+     
+    res.status(500).json({message: "Somthing wrong!",errorStatus:true});
+    next(e) 
+  }
+})
 
+router.delete('/usertrips/deletetrip',verifyToken, async (req, res, next) => {
+  try {
+    const tkn =  jwt.verify(req.token,config.get('keycript')) ;
+   
+     let id = mongoose.Types.ObjectId(req.body.deleteID);
+    
+  
+   await User.findOneAndUpdate({_id: tkn.userID}, {$pull: {trips: id}},{ new: true}); 
 
+   res.status(201).json({message: 'Trip deleted!',errorStatus:false});
+
+  } catch (e) {
+      console.log(e)
+    res.status(500).json({message: "Somthing wrong!",errorStatus:true});
+    next(e) 
+  }
+})
 
 
 

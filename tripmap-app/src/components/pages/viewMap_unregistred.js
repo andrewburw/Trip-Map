@@ -134,7 +134,7 @@ function MapRender(props) {
 <div>
 
 <Map
-    center={props.data.tripRoute[0]}
+    center={props.data.tripRoute[0] || [56.953592, 24.226905]}
     zoom={13}
    
   >

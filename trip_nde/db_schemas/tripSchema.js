@@ -8,6 +8,7 @@ let tripSchema = new mongoose.Schema({
           tripBy: String,
           tripDescrp: String,
           tripRate: Number,
+          tripStatus: String,
           tripRoute: [Array],
           tripDistance: Number,
           tripComents: [{

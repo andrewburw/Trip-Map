@@ -11,11 +11,13 @@ class SaveTrip extends Component {
                  tripBy: '',
                  tripDescrp: '',
                  tripRate: '',
+                 tripStatus:'',
                  errors: {
                     tripName: '',
                     tripBy: '',
                     tripDescrp: '',
-                    tripRate: ''
+                    tripRate: '',
+                    tripStatus: '',
 
                  },
                 dataSending: true ,  // protect from multyply pressing btn send,
@@ -55,7 +57,12 @@ checkInput = (val,field) => {
 
             val === 'def' ? result.tripRate = true : result.tripRate = false;
                            
-        }
+        } else if (field === 'tripStatus'){
+
+          val === 'def' ? result.tripStatus = true : result.tripStatus = false;
+                         
+      }
+
 
 
     this.setState({errors: result})
@@ -87,16 +94,17 @@ handleSubmit = () => {
     tripBy: this.state.tripBy,
     tripDescrp:  this.state.tripDescrp,
     tripRate: this.state.tripRate,
+    tripStatus: this.state.tripStatus,
     tripDistance: this.props.data.distance,
     tripComents: this.props.data.tripComents,
     tripRoute: this.props.data.tripRoute,
     tripStops: this.props.data.tripStop,
-    dateAdded: new Date().toLocaleString()
-
+    dateAdded: new Date().toLocaleString(),
+    tripAuthor: localStorage.getItem('user_name') || 'unknown'
 
      }
   
-     console.log(dataToSend)
+     const auth = 'Bearer ' + localStorage.getItem('token');
      this.setState({dataSending: false}) // protect button send from multiply press
  
  
@@ -104,7 +112,8 @@ handleSubmit = () => {
      fetch('http://localhost:3001/api/newtrip', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json;charset=utf-8',
+      'Authorization': auth
       
     },
     body: JSON.stringify(dataToSend)
@@ -179,11 +188,13 @@ handleSubmit = () => {
     let titleClass = 'input';
     let titleMsg = <p className="help">Best practice: "Start route - End route"</p>;
     let tripByClass = 'select is-danger';
-    let tripByMsg = <p className="help is-danger">Plz select.</p>;
+    let tripByMsg = <p className="help is-danger">Please select.</p>;
     let textAreaClass = 'textarea';
     let textAreaMsg = '';
     let tipRateClass = 'select is-danger';
-    let tripRateMsg = <p className="help is-danger">Plz select.</p>;
+    let tripRateMsg = <p className="help is-danger">Please select.</p>;
+    let tirpStatusClass = 'select is-danger';
+    let tirpStatusMsg = <p className="help is-danger">Please select.</p>;
   // ******************* TRIP TITLE *********************   
     if(this.state.errors.tripName === true) {
         titleMsg = errorsViz.messageError;
@@ -211,6 +222,11 @@ handleSubmit = () => {
 if(this.state.errors.tripRate === false) {
     tripRateMsg  = errorsViz.messageSucces;
     tipRateClass = errorsViz.selectSuccessCls;
+}
+// ******************** TRIP STATUS ***********************
+if(this.state.errors.tripStatus === false) {
+  tirpStatusMsg  = errorsViz.messageSucces;
+  tirpStatusClass  = errorsViz.selectSuccessCls;
 }
 // ******************** BUTTON **************************
 let btnSave = <button className="button is-success" disabled>Save changes</button>;
@@ -251,7 +267,7 @@ if (this.state.redirect) {
            <div className="field">
   <label className="label">Your Trip Name</label>
   <div className="control">
-    <input className={ titleClass} type="text" id="tripName" onChange={this.handleChange} maxLength="30" placeholder="Enter Trip Name" />
+    <input className={ titleClass} type="text" id="tripName" onChange={this.handleChange} maxLength="30" placeholder="Enter Trip Name" autoComplete="off"/>
   </div>
   {titleMsg}
 </div>
@@ -304,6 +320,20 @@ if (this.state.redirect) {
   { tripRateMsg}
 </div>
 
+<div className="field">
+  <label className="label">Trip Status</label>
+  <div className="control">
+    <div  className={tirpStatusClass} >
+      <select id="tripStatus"  onChange={this.handleChange}>
+        <option >Select dropdown</option>
+        <option>Planed</option>
+        <option>Complited</option>
+       
+      </select>
+    </div>
+  </div>
+  {tirpStatusMsg}
+</div>
 <div className="field">
   <label className="label">Trip Length</label>
   <div className="control">

@@ -36,10 +36,11 @@ class DashBoard extends Component {
 
 
   <ul className="menu-list">
-    <li><a href="/">Boat Trips</a></li>
-    <li><a href="/">Walk Trips</a></li>
-    <li><a href="/">Planed Trips</a></li>
-    <li><a href="/">Complited Trips</a></li>
+    <li><Link to="/dashboard/viewtrips">Boat Trips</Link></li>
+    <li><Link to="/dashboard/viewtrips">Bike Trips</Link></li>
+    <li><Link to="/dashboard/viewtrips">Walk Trips</Link></li>
+    <li><Link to="/dashboard/viewtrips">Planed Trips</Link></li>
+    <li><Link to="/dashboard/viewtrips">Complited Trips</Link></li>
     <li><Link to="/dashboard/viewtrips">All Trips</Link></li>
   </ul>
   <p className="menu-label">
