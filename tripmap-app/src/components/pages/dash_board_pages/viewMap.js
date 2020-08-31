@@ -137,7 +137,7 @@ return  (  <Marker key={Math.random()}  position={item['coordinates']}>
 
 </Map>
 <br />
-
+<h1 className="title is-5">Comment:</h1>
 <p  className="is-size-6"> {props.data.tripDescrp}</p>
 </div>
 </div> 

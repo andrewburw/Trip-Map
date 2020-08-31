@@ -12,7 +12,8 @@ class AllUserTrips extends Component {
             serverError: false,
             serverMsg: '',
             modal: false,
-            deleteId: ''
+            deleteId: '',
+            pageTitle: ''
           
           };
   
@@ -23,8 +24,37 @@ buttonClickMenu = (e) =>{
         
       
 }
+ sortSelected = (data) => { 
+     
+     let result = '';
+     let menu = ''; // for Page Title 
+     if (this.props.location.state.sort === 'all') {
+      result = data
+      menu = 'View All Trips';
+     } else if(this.props.location.state.sort === 'complite') {
+      result = data.filter(x => x.tripStatus ==='Complited');
+      menu = 'View Complited Trips';
+     }else if(this.props.location.state.sort === 'plan') {
+      result = data.filter(x => x.tripStatus ==='Planed');
+      menu = 'View Planned Trips';
+     } else if(this.props.location.state.sort === 'by boats') {
+      result = data.filter(x => x.tripBy === 'by boats')
+      menu = 'View Boats Trips';
+     } else if(this.props.location.state.sort === 'by walk') {
+      result = data.filter(x => x.tripBy === 'by walk')
+      menu = 'View Walk Trips';
+     } else if(this.props.location.state.sort === 'by bicycle') {
+      result = data.filter(x => x.tripBy === 'by bicycle')
+      menu = 'View Bicycle Trips';
+     }
 
+  this.setState({data: result,pageTitle: menu})
+
+
+
+ }
  componentDidMount () {
+  
   const auth = 'Bearer ' + localStorage.getItem('token');
 
      fetch('http://localhost:3001/api/usertrips', {
@@ -39,12 +69,12 @@ buttonClickMenu = (e) =>{
     }).then(response => response.json()
        
     ).then(data => {
-     
-      this.setState({data: data})
+     this.sortSelected(data) // filter by dashboard menu (on the right side menu)
+      //this.setState({data: data})
      if (data.errorStatus === true) {
       
-     //  this.setState({serverError: true});
-     //  this.setState({serverMsg: data.messege});
+      this.setState({serverError: true});
+      this.setState({serverMsg: data.messege});
   
   
          } 
@@ -126,13 +156,15 @@ headers: {
      <div className="container">
        {this.state.modal ? <ModalDelete closeModal={()=>{this.setState({modal:false})}} daleteTrue={this.deletTrip}/> : ''}
 <div className="column is-main-content" >
-            <h1 className="title is-5" style={{'marginTop': '1rem'}}>View All Trips</h1>
+            <h1 className="title is-5" style={{'marginTop': '1rem'}}>{this.state.pageTitle}</h1>
           <hr />
+         
           <div className="level-right">
           <div className="buttons are-small">
        <button className={'button '+ buttonSeleted.feed || ''} value="feed" onClick={this.buttonClickMenu }>Feed</button>
        <button className={'button '+ buttonSeleted.table || ''} value="table" onClick={this.buttonClickMenu }>Table</button>
        
+    
     </div>
     </div>
     <hr />
@@ -232,6 +264,8 @@ return ( <div>
           <span className="is-size-6 is-family-monospace">Length - {item['tripDistance']}km</span>
           <br />
           <span className="is-size-6 is-family-monospace">By - {item['tripBy']}</span>
+          <br />
+          <span className="is-size-6 is-family-monospace">Status - {item['tripStatus']}</span>
           <br />
            
             <p style={{'marginTop':'0.5rem'}}> {item['tripDescrp']}</p>
