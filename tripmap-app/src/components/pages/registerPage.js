@@ -34,12 +34,13 @@ handleSubmit = () => {
      
 
   // ************** data send to server fnc *****************
-
+  
   const dataToSend = {
    password: this.state.pass1,
    email: this.state.email,
    name: this.state.name,
-   about: this.state.about
+   about: this.state.about,
+   registerData: new Date().toLocaleDateString()
     }
    
     this.setState({'serverError':null}); // turn off massage "Good, password match!"

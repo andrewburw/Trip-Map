@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Logo from '../img/trip.png';
+import {Redirect} from "react-router-dom";
 
 class LoginPage extends Component {
             state = {
@@ -12,6 +13,7 @@ class LoginPage extends Component {
                     serverError: null,
                     serverMsg: '',
                     protectButtn: false,
+                    loginSuccess: false
                    
            };
 
@@ -94,7 +96,9 @@ setTimeout(() => { // without async bug (or problem whith state update) require 
         // *** if auth is successful ***
           localStorage.setItem('token', data.token);
           localStorage.setItem('user_name', data.userID);
-               
+          setTimeout(() => {
+            this.setState({loginSuccess: true}); // redirect occurs after the message about successful registration
+          }, 1000); 
      this.setState({serverError: false,serverMsg: 'Login Succes!',protectButtn: true});	
      }
      
@@ -154,7 +158,13 @@ render(){
   if (this.state.serverError === false) {
       servErr = <div className="notification is-success">{this.state.serverMsg}</div>
   }
-   
+  // --------- redirect ------
+  if (this.state.loginSuccess) {
+      
+    return <Redirect to='/dashboard' />
+    
+     
+   }
 
     return(
         <div className="hero is-primary is-large">

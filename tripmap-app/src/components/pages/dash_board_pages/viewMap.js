@@ -15,7 +15,7 @@ class ViewMapUnregistred extends Component {
         super(props);
         this.state = {
             data: '',
-            serverError: false,
+            serverError: true,
             serverMsg: ''
 
           };
@@ -27,9 +27,15 @@ class ViewMapUnregistred extends Component {
 
 componentDidMount(){
  
-   console.log(this.props.location.state.data._id)
-
+  
+  if (typeof this.props.location.state === 'undefined') {
+    this.setState({serverError: true,serverMsg: 'ERROR Try back to dashboard pages.'})
+    
+  } else {
+    this.setState({data: this.props.location.state.data ,serverError: false})
+  }
 }
+
   render(){
       
        let render = null;
@@ -39,7 +45,8 @@ componentDidMount(){
        } else if (false) {
         render =  <progress className="progress is-small is-info" max="100">60%</progress>
        } else {
-         render = <MapRender data={this.props.location.state.data} />
+      
+         render = <MapRender data={this.state.data} />
        }
 
     return(

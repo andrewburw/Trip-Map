@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
         password: {type: String, required: true},
         name: {type: String, required: true, unique: true},
         trips: [{type: Array}],
-        about: {type: String}
+        about: {type: String},
+        registerData: {type: String}
 
 
 },{collection: 'users'});

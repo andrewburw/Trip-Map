@@ -25,7 +25,7 @@ buttonClickMenu = (e) =>{
       
 }
  sortSelected = (data) => { 
-     
+      if(data === '' || this.props.location.state=== undefined ){ return []}
      let result = '';
      let menu = ''; // for Page Title 
      if (this.props.location.state.sort === 'all') {
@@ -204,7 +204,7 @@ return  (
  
   <tr key={i}>
       <th>{i}</th>
-      <td><Link to={{ pathname: '/viewmap/' + props.data[i]._id, state: { data: props.data[i],recivedDataFromComponent: true} }} >{item['tripName']}</Link></td>
+      <td><Link to={{ pathname: '/dashboard/viewmap/', state: { data: props.data[i],recivedDataFromComponent: true} }} >{item['tripName']}</Link></td>
       <td>{item['tripAuthor']}</td>
       <td>{item['dateAdded']}</td>
       <td>{item['tripRate']}</td>

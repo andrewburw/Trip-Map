@@ -6,7 +6,7 @@ const {check, validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const mongoose = require('mongoose');
-//const checkAntiSpamDate = require('./custome_modules/dateChecker.js');
+const profileStats = require('./custome_modules/profileStats.js');
 
  //res.header("Access-Control-Allow-Origin", "*"); 
 
@@ -108,7 +108,32 @@ router.delete('/usertrips/deletetrip',verifyToken, async (req, res, next) => {
   }
 })
 
+router.get('/userprofile',verifyToken, async (req, res, next) => {
+  try {
+    const tkn =  jwt.verify(req.token,config.get('keycript')) 
+   
+    
+    const user = await User.find({_id:tkn.userID})
+    const tripResults = await Trips.find({_id: user[0].trips})
+    const {name,trips,about,registerData} = user[0]
+    const {boatCount,otherCount} = profileStats(tripResults) // custome module
+    
+    
+   res.json({
+     name: name,
+     tripsN: trips.length,
+     boatTrips: boatCount, 
+     otherTrips: otherCount,
+     bio:  about,
+     regData: registerData
+    });
 
+  } catch (e) {
+     console.log(e)
+    res.status(500).json({message: "Somthing wrong!"});
+    next(e) 
+  }
+})
 
 
 
@@ -173,93 +198,9 @@ router.put("/modyfytank",verifyToken , async(req, res) => {
 });
 
 
-router.post('/newtank',verifyToken , async (req, res) => {
-  
-  try {
-    const tkn =  jwt.verify(req.token,confitoken) 
-    
-    if (tkn.userID === '5ebc45179868a925dcd3bcbe') {
-      const tanks = new Tanks(req.body);
-
-      await tanks.save()
-      res.json({message: "New tank saved!"});
-    } else {
-    
-      throw new Error("Sorry you don't have access!");
-    }
-  
-   
-  } catch (err) {
-          
-    res.status(500).json({ message: err.toString(),errorStatus:true});
-    
-  }
-});
 
 
 
-router.put("/addfavorites",verifyToken , async(req, res) => { 
-  const {id} = req.body;
- 
-  
-  try {
-    const tkn =  jwt.verify(req.token,confitoken) 
-    
-    await User.findOneAndUpdate({_id: tkn.userID}, {$addToSet: {favoriteTank: id }},{new: true});
-       
-  
-
-    res.json({ message: 'Added  to favorites!' })
-
-
-   } catch (err) {
-    
-    res.status(500).json({ message: err.toString(),errorStatus:true});
-    
-   }
-});
-
-router.get("/favorites",verifyToken , async(req, res) => { 
-  const {id} = req.body;
- // the first idea was to make favorites in localstorage, but I decided to make a function on the 
- // server by trying to add/teach new functionality through the server
-  
-  try {
-    const tkn =  jwt.verify(req.token,confitoken) 
-    const favorites =  await User.findById({_id: tkn.userID});  
-      
-  
-    res.json({ message: 'Done!' ,favorites:favorites.favoriteTank})
-
-
-   } catch (err) {
-     
-    res.status(500).json({ message: err.toString(),errorStatus:true});
-    
-   }
-});
-
-router.put("/removefavorites",verifyToken , async(req, res) => { 
-  const {id} = req.body;
- 
-
-  try {
-    
-    const tkn =  jwt.verify(req.token,confitoken) 
-    
-    await User.findOneAndUpdate({_id: tkn.userID}, {$pull: {favoriteTank: id }},{new: true});
-       
-  
-
-    res.json({ message: 'Removed from favorites!' })
-
-
-   } catch (err) {
-    
-    res.status(500).json({ message: err.toString(),errorStatus:true});
-    
-   }
-});
  */
 
 function verifyToken(req,res,next){

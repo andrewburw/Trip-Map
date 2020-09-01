@@ -151,9 +151,10 @@ handleSubmit = () => {
          this.setState({dataSending: false}); // protect button
          this.setState({serverError: false});
          this.setState({serverMsg: 'Trip Saved!'});
+
      
          setTimeout(() => {
-           this.setState({redirect: true}); // redirect occurs after the message about successful registration
+           this.setState({redirect: true}); // redirect occurs after the respond about successful registration
          }, 1500);
  
        }

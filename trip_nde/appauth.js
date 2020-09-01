@@ -24,7 +24,7 @@ router.post('/register',[
      message: 'Entered wrong data!'
      })
    }
-    const {email, password,name,about} = req.body; 
+    const {email, password,name,about,registerData} = req.body; 
     
     const chExistEmail = await User.findOne({email});
       if (chExistEmail) {
@@ -36,10 +36,10 @@ router.post('/register',[
           return res.status(500).json({messege: 'User already exists!Check name or Email!',errorStatus:true});
       }
 
-
+      
 
     const  hashedPassword = await bcrypt.hash(password,12);
-    const user = new User({email,password: hashedPassword,name,about});
+    const user = new User({email,password: hashedPassword,name,about,registerData});
    
     await user.save();
 
