@@ -20,7 +20,8 @@ let tripSchema = new mongoose.Schema({
             raiting: String,
             title: String
           }],
-          dateAdded: String
+          dateAdded: String,
+          tripColor: String
           
          
 

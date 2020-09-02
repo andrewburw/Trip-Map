@@ -1,31 +1,160 @@
 import React, { Component } from 'react';
-
+import 'leaflet/dist/leaflet.css';
+import { Map, TileLayer, Polyline,Marker, Popup} from 'react-leaflet'
+import L from 'leaflet';
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+    iconUrl: require('leaflet/dist/images/marker-icon.png'),
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+});
 
 
 class MyMap extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: '',
+            serverError: false,
+            serverMsg: ''
 
-    state={}
+          };
+        }
 
 
-  render() {
-      
-    
-    return(
+
+
+
+        componentDidMount () {
+  
+          const auth = 'Bearer ' + localStorage.getItem('token');
         
-<div className="column is-main-content"><h1 className="title is-4">My Map</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-   Sed massa dolor, placerat vitae tincidunt id, porttitor at justo. Nam mollis arcu nec sapien commodo
-    facilisis. Mauris eleifend elit sed tellus hendrerit, eget cursus est vehicula. Sed arcu nibh, placerat
-     vel risus nec, laoreet tempus enim. Proin porttitor sem sed fermentum consectetur. In urna dolor, 
-     bibendum et tristique sit amet, convallis sit amet mauris. Etiam mattis nisi id est faucibus, id 
-     scelerisque sem fermentum. Nullam mollis ipsum id sapien imperdiet aliquet. Suspendisse vitae ipsum
-      in risus egestas posuere. Quisque sodales euismod velit at volutpat.</p>
-  </div>
+             fetch('http://localhost:3001/api/usertrips', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              'Authorization': auth
+        
+              
+            }
+          
+            }).then(response => response.json()
+               
+            ).then(data => {
 
+              
+              this.setState({data: data})
+           
+             if (data.errorStatus === true) {
+              
+              this.setState({serverError: true});
+              this.setState({serverMsg: data.messege});
+          
+          
+                 } 
+            
+         
+            }).catch(err => {
+               console.error(err)
+               this.setState({serverError: true});
+               this.setState({serverMsg: err.toString()});
+            });
+         
+        }
 
+  render(){
+      
+       let render = null;
 
-    
+       if (this.state.serverError) {
+        render =  <div className="notification is-danger">{this.state.serverMsg}</div>
+       } else if (this.state.data === '') {
+        render =  <progress className="progress is-small is-info" max="100">60%</progress>
+       } else {
+      
+         render = <MapRender data={this.state.data} />
+       }
+
+    return(
+        <div className="container">
+            {render }  
+        </div> 
   );
-  }
+    }
 }
 
-export default MyMap;
+
+function MapRender(props) {
+
+ function randColor(){
+   // render random colors
+   const colors = ['red','#08819d','#38565c','#983020','#03396c']; 
+
+  return colors[Math.floor(Math.random()*colors.length)];
+ }
+    return (
+      
+            <div className="column is-main-content" >
+            <h1 className="title is-5" style={{'marginTop': '1rem'}}>View Trips on Map</h1>
+          <hr />
+          <div className="level">
+      <p>All your trips in one map.</p>
+   
+    </div>
+  
+
+
+<div>
+
+<Map
+    center={props.data[0].tripRoute[0]}
+    zoom={8}
+   
+  >
+    <TileLayer
+      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    />''
+   
+)
+
+ { Array.from(props.data || []).map((item, i) => {
+   
+return  ( <Polyline key={i} positions={item.tripRoute} color={item.tripColor || 'red'} />
+)
+
+})  }
+
+{ Array.from(props.data || []).map((item, i) => {
+
+return  (  <Marker key={Math.random()}  position={item.tripRoute[0]}>
+             <Popup> <div className="card">
+
+             <div className="card-content">
+                <div className="content">
+                    <h1 className="title is-5"> {item.tripName}</h1>
+                    <p><strong>Trip length:</strong><span className="is-family-monospace" > {item.tripDistance} km</span>. </p>
+                    <p><strong>Trip by:</strong><span className="is-family-monospace" > {item.tripBy}.</span></p>
+                    <p><strong>Comment:</strong><span className="is-family-monospace" > {item.tripDescrp}</span></p>
+                   
+                  
+                </div>
+              </div>
+
+</div></Popup>
+           </Marker>)
+
+})}
+
+
+
+</Map>
+
+</div>
+</div> 
+     
+ 
+    );    
+
+  }
+export default  MyMap;

@@ -24,15 +24,15 @@ const profileStats = require('./custome_modules/profileStats.js');
     message: 'Entered wrong data!'
     })
   }
-   const {tripName,dateAdded, tripBy,tripDescrp,tripRate,tripDistance,tripComents,tripRoute,tripStops,tripStatus,tripAuthor} = req.body; 
+   const {tripName,dateAdded, tripBy,tripDescrp,tripRate,tripDistance,tripComents,tripRoute,tripStops,tripStatus,tripAuthor,tripColor} = req.body; 
  
-   const trip = new Trips({tripAuthor,tripName, tripBy,tripDescrp,tripRate,tripRoute,tripDistance, tripComents,tripStops,dateAdded,tripStatus});
+   const trip = new Trips({tripAuthor,tripName, tripBy,tripDescrp,tripRate,tripRoute,tripDistance, tripComents,tripStops,dateAdded,tripStatus,tripColor});
    let tripID = ''; 
 
 
    await trip.save().then((trip) => { tripID = trip._id});
    
-   console.log(tripID)
+ 
 
    await User.findOneAndUpdate({_id: tkn.userID}, {$addToSet: {trips: tripID }},{new: true});
   // throw new Error('sample')
@@ -44,7 +44,7 @@ const profileStats = require('./custome_modules/profileStats.js');
  
 
   } catch (error) {
-    console.log(error)
+   
     res.status(500).json({messege: 'Save trip server error',errorStatus:true});
 
   }
@@ -102,7 +102,7 @@ router.delete('/usertrips/deletetrip',verifyToken, async (req, res, next) => {
    res.status(201).json({message: 'Trip deleted!',errorStatus:false});
 
   } catch (e) {
-      console.log(e)
+     
     res.status(500).json({message: "Somthing wrong!",errorStatus:true});
     next(e) 
   }
@@ -129,79 +129,12 @@ router.get('/userprofile',verifyToken, async (req, res, next) => {
     });
 
   } catch (e) {
-     console.log(e)
+     
     res.status(500).json({message: "Somthing wrong!"});
     next(e) 
   }
 })
 
-
-
-
-
-
-
- /*
-const confitoken = 'drive faster then you'
-router.get('/tanks', async (req, res, next) => {
-  try {
-    const tanks = await Tanks.find( { })
-   
-    res.json(tanks);
-   
-  } catch (e) {
-          
-    res.status(500).json({message: "Somthing wrong!"});
-    next(e) 
-  }
-})
-
-router.put("/modyfytank",verifyToken , async(req, res) => { 
-   
-  
-   
-  try {
-    const tkn =  jwt.verify(req.token,confitoken) 
-    
-     
-    const {id,dataToChange} = req.body;
-  
-    let user = await User.findOne({_id: tkn.userID});
-    let postPermission = checkAntiSpamDate.checkDate({posts: user.postsInOneDay,date: user.postDay},10,false);
-   
-    if (postPermission.postAllow) {
-       if(postPermission.newDay){
-         // if date changed set counter to 0
-        await User.findOneAndUpdate({_id: tkn.userID}, {$set: {postsInOneDay: 0 }},{new: true});
-
-       }
-         await User.findOneAndUpdate({_id: tkn.userID}, { $inc: {postsInOneDay: 1 },
-        $set:{postDay:checkAntiSpamDate.checkDate({posts: user.postsInOneDay,date: user.postDay},10,true)}} // checkDate argument set to true (return date string)
-        ,{new: true})
-        let data = await Tanks.findOneAndUpdate({"id": id}, {$set: dataToChange},{new: true})
-
-        res.json({ message: 'Tank updated!' })
-
-    } else {
-     
-     throw new Error('Sorry only 10 posts per day from one user!');
-    
-
-    }
-       
-  
-   } catch (err) {
-   
-    res.status(500).json({ message: err.toString(),errorStatus:true});
-    
-   } 
-});
-
-
-
-
-
- */
 
 function verifyToken(req,res,next){
 

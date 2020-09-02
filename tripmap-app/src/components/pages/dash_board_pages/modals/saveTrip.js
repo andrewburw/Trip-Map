@@ -100,7 +100,8 @@ handleSubmit = () => {
     tripRoute: this.props.data.tripRoute,
     tripStops: this.props.data.tripStop,
     dateAdded: new Date().toLocaleString(),
-    tripAuthor: localStorage.getItem('user_name') || 'unknown'
+    tripAuthor: localStorage.getItem('user_name') || 'unknown',
+    tripColor: this.props.data.tripColor
 
      }
   

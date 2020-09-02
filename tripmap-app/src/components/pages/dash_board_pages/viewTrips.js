@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,useState } from 'react';
 import {Link,} from "react-router-dom";
 import ModalDelete from './modals/deleteTrip'
 
@@ -13,7 +13,9 @@ class AllUserTrips extends Component {
             serverMsg: '',
             modal: false,
             deleteId: '',
-            pageTitle: ''
+            pageTitle: '',
+            shareLinkModal: false,
+            shareLink: ''
           
           };
   
@@ -137,7 +139,7 @@ headers: {
     } else if (this.state.data === '') {
      render =  <progress className="progress is-small is-info" max="100">60%</progress>
     } else {
-      render = this.state.selectedMenu === 'feed' ? <Feed data={this.state.data} callBackTrriger={(ab)=>{this.setState({modal:true,deleteId:ab})}}/> : <Table data={this.state.data} />
+      render = this.state.selectedMenu === 'feed' ? <Feed data={this.state.data} shareLink={(ab)=>{this.setState({shareLinkModal:true,shareLink:ab})}} callBackTrriger={(ab)=>{this.setState({modal:true,deleteId:ab})}}/> : <Table data={this.state.data} />
     }
 
 
@@ -155,6 +157,7 @@ headers: {
     return(
      <div className="container">
        {this.state.modal ? <ModalDelete closeModal={()=>{this.setState({modal:false})}} daleteTrue={this.deletTrip}/> : ''}
+       {this.state.shareLinkModal ? <ModalShareLink closeModal={()=>{this.setState({shareLinkModal:false})}} dataLink={this.state.shareLink}/> : ''}
 <div className="column is-main-content" >
             <h1 className="title is-5" style={{'marginTop': '1rem'}}>{this.state.pageTitle}</h1>
           <hr />
@@ -235,11 +238,19 @@ return  (
 
 
 function Feed (props) {
-
- function deletTrip(e) {
+  
  
-  props.callBackTrriger(e.target.id)
- }
+    function deletTrip(e) {
+ 
+     props.callBackTrriger(e.target.id)
+    }
+
+    function onClickShare(e) {
+   
+    props.shareLink(e.target.value)
+    }
+
+
 
 return ( <div>
   { Array.from(props.data || []).map((item, i) => {
@@ -251,10 +262,11 @@ return ( <div>
       </p>
       
     </figure>
-    
+     
     <div className="media-content">
    
       <div className="content">
+     
           <div>
             
           <span className="title is-5">{item['tripName']}</span> <small>@{item['tripAuthor']}</small> <small>{item['dateAdded']}</small>
@@ -278,11 +290,11 @@ return ( <div>
     </div>
 
     <div className="media-right">
-   
-      <Link to={{ pathname: '/dashboard/viewmap/' , state: { data: props.data[i]} }} ><button  className="button is-info is-small">View Map</button></Link>
-     
-      <button  className="button is-danger is-small" onClick={deletTrip} id={props.data[i]._id} style={{marginLeft: '0.5rem'}}>Delete Trip</button>
-         
+      <div className="buttons">
+        <button onClick={onClickShare } value ={props.data[i]._id} className="button is-small is-light">Share Link</button>
+        <Link to={{ pathname: '/dashboard/viewmap/' , state: { data: props.data[i]} }} ><button  className="button is-info is-small">View Map</button></Link>
+        <button  className="button is-danger is-small" onClick={deletTrip} id={props.data[i]._id} style={{marginLeft: '0.5rem'}}>Delete Trip</button>
+      </div>
     </div>
     
     </article>
@@ -307,7 +319,40 @@ return ( <div>
 }
 
 
+function ModalShareLink(props) {
 
+  function copyToClipboard (e){
+    alert('Copied!')
+    props.closeModal()
+    navigator.clipboard.writeText('adress/api/trip' + props.dataLink)
+
+  }
+ 
+
+return ( <div className="modal is-active">
+<div className="modal-background"></div>
+<div className="modal-card">
+  <header className="modal-card-head">
+    <p className="modal-card-title">Share Trip</p>
+   </header>
+  <section className="modal-card-body">
+   <p>Share this link</p>
+   <br />
+   <div className="level">
+     <input className="input is-small" type="text" defaultValue={'adress/api/trip' + props.dataLink} />
+     <button className="button is-small is-dark " onClick={copyToClipboard}>Copy To Clipboard</button>
+   </div>
+  </section>
+  <footer className="modal-card-foot">
+    
+      <button className="button" onClick={props.closeModal}>Cancel</button>
+  </footer>
+</div>
+</div>)
+
+
+
+}
 
 
 

@@ -22,7 +22,9 @@ class DashMain extends Component {
             activeCommentData: '', 
             activeStopData: '',  
             commentMainDATA:[],
-            stopMainDATA:[]
+            stopMainDATA:[],
+            dropDownShow: false,
+            tripColor: 'red'
         };
     }
 
@@ -150,7 +152,7 @@ buttonClickDelLine = () => {
 
 buttonClickCancel = () => {
    //clear all
-    this.setState({'trip':[]});
+    this.setState({'trip':[],commentMainDATA:[],stopMainDATA: []});
 
 
 }
@@ -192,6 +194,11 @@ buttonClickDeleteStop = (e) => {
 
 }
 
+buttonDropDownColor = (e) => {
+  
+  this.setState({tripColor: e.target.value, dropDownShow: false})
+
+}
   render() {
     //************ BUTTON MENU SELECTED***************
     
@@ -209,8 +216,9 @@ buttonClickDeleteStop = (e) => {
       }
 
    
-     
+     let showDropDown = ''
     
+     showDropDown = this.state.dropDownShow === true ? 'is-active': ''
   
     return(
     
@@ -220,7 +228,7 @@ buttonClickDeleteStop = (e) => {
   <h1 className="title is-5" style={{'marginTop': '1rem'}}>Draw your trip</h1>
   {this.state.modal === 'comment' ? <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} dataEdit={this.state.activeCommentData} /> :""}
   {this.state.modal === 'stop' ? <StopInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalStop} dataEdit={this.state.activeStopData}/> : ""} 
-  {this.state.modal === 'saveTrip' ? <SaveTrip  data={{distance: getDistance(this.state.trip),tripRoute: this.state.trip,tripStop: this.state.stopMainDATA,tripComents: this.state.commentMainDATA}} closeModal={this.handleCloseModal} /> : ""}
+  {this.state.modal === 'saveTrip' ? <SaveTrip  data={{distance: getDistance(this.state.trip),tripRoute: this.state.trip,tripStop: this.state.stopMainDATA,tripComents: this.state.commentMainDATA,tripColor: this.state.tripColor}} closeModal={this.handleCloseModal} /> : ""}
   <hr />
   <div className="level">
   
@@ -235,9 +243,41 @@ buttonClickDeleteStop = (e) => {
        <button className={'button '+ buttonSeleted.drawRoute || ''} value="drawRoute" onClick={this.buttonClickMenu }>Draw Route</button>
        <button className={'button '+ buttonSeleted.addComent || ''} value="addComent" onClick={this.buttonClickMenu }>Add Comment</button>
        <button className={'button '+  buttonSeleted.addStop || ''} value="addStop" onClick={this.buttonClickMenu }>Add Stop</button>
-       
-       <button className="button">test</button>
        <button className="button is-danger" onClick={this.buttonClickDelLine }>Delete Last Line</button>
+       
+     
+       <div  className={'dropdown ' + showDropDown}>
+  <div  className="dropdown-trigger">
+    <button  className="button" aria-haspopup="true" onClick={()=>{this.setState(state => ({dropDownShow: !state.dropDownShow})) }} aria-controls="dropdown-menu">
+      <span>Trip Color</span>
+      <span  className="icon is-small">
+        <i  className="fas fa-angle-down" aria-hidden="true"></i>
+      </span>
+    </button>
+  </div>
+  <div  className="dropdown-menu" id="dropdown-menu" role="menu">
+    <div  className="dropdown-content">
+    <div  className="dropdown-item">
+       <button className='button is-small is-fullwidth' value="#FF0000" onClick={this.buttonDropDownColor} style={{backgroundColor: 'red',cursor: 'pointer',color: 'white'}}> #FF0000 </button>
+      </div>
+     
+      <div  className="dropdown-item">
+      <button className='button is-small is-fullwidth' value="#08819d" onClick={this.buttonDropDownColor} style={{backgroundColor: '#08819d',cursor: 'pointer',color: 'white'}}>#08819d</button>
+      </div>
+      <div  className="dropdown-item">
+      <button className='button is-small is-fullwidth' value="#38565c" onClick={this.buttonDropDownColor} style={{backgroundColor: '#38565c',cursor: 'pointer',color: 'white'}}>#38565c</button>
+      </div>
+      <div  className="dropdown-item">
+      <button className='button is-small is-fullwidth' value="#983020" onClick={this.buttonDropDownColor} style={{backgroundColor: '#983020',cursor: 'pointer',color: 'white'}}>#983020</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+     
+
+
+
     </div>
   </div>
   </div>
@@ -252,7 +292,7 @@ buttonClickDeleteStop = (e) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-     <Polyline key={124} positions={this.state.trip} color={'red'} />
+     <Polyline key={124} positions={this.state.trip} color={this.state.tripColor} />
 {  Array.from(this.state.commentMainDATA).map((item, i) => {
 
      return  (  <Marker key={Math.random()}  position={item['coordinates']}>
