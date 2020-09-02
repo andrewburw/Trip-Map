@@ -76,7 +76,7 @@ router.post('/login',[
      const {email, password} = req.body; 
      const user = await User.findOne({email})
        if (!user) {
-           return res.status(500).json({messege: 'Login error.Check Email or Password!',loginError: true});
+           return res.status(500).json({message: 'Login error.Check Email or Password!',loginError: true});
        }
      const isMatch = await bcrypt.compare(password, user.password);
  
@@ -92,7 +92,7 @@ router.post('/login',[
 
     } catch (error) {
       
-      res.status(500).json({messege: 'Login error.Check Email or Password!',loginError: true});
+      res.status(500).json({message: 'Login error.Check Email or Password!',loginError: true});
  
     }
 

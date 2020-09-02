@@ -40,17 +40,17 @@ class DashMain extends Component {
         this.setState({data: data})
        if (data.errorStatus === true) {
         
-       // this.setState({serverError: true});
-     //   this.setState({serverMsg: data.messege});
+       this.setState({serverError: true});
+       this.setState({serverMsg: data.messege});
     
     
-           } 
+      } 
       
    
       }).catch(err => {
          console.error(err)
-      //   this.setState({serverError: true});
-      //   this.setState({serverMsg: err.toString()});
+         this.setState({serverError: true});
+         this.setState({serverMsg: err.toString()});
       });
    
   }

@@ -1,4 +1,4 @@
-import React, { Component,useState } from 'react';
+import React, { Component} from 'react';
 import {Link,} from "react-router-dom";
 import ModalDelete from './modals/deleteTrip'
 
@@ -301,20 +301,7 @@ return ( <div>
       )
     
     })}
-
-
-  
-
-
-
-
-
-
 </div>)
-
-
-
-
 
 }
 

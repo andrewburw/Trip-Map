@@ -36,8 +36,8 @@ buttonClickMenu = (e) =>{
       this.setState({data: data})
      if (data.errorStatus === true) {
       
-     //  this.setState({serverError: true});
-     //  this.setState({serverMsg: data.messege});
+      this.setState({serverError: true});
+      this.setState({serverMsg: data.messege});
   
   
          } 

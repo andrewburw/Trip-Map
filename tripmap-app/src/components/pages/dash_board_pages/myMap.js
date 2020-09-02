@@ -86,12 +86,7 @@ class MyMap extends Component {
 
 function MapRender(props) {
 
- function randColor(){
-   // render random colors
-   const colors = ['red','#08819d','#38565c','#983020','#03396c']; 
 
-  return colors[Math.floor(Math.random()*colors.length)];
- }
     return (
       
             <div className="column is-main-content" >

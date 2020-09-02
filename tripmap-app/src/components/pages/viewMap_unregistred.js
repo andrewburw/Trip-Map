@@ -50,7 +50,7 @@ fetch(`http://localhost:3001/api/trips/${id}`, {
        
     ).then(data => {
       
-     
+         console.log(data)
      
       if (data.length === 0) {
         this.setState({serverError: true});
@@ -64,7 +64,7 @@ fetch(`http://localhost:3001/api/trips/${id}`, {
      if (data.errorStatus === true) {
       
       this.setState({serverError: true});
-      this.setState({serverMsg: data.messege});
+      this.setState({serverMsg: data.message});
   
   
          }  else {

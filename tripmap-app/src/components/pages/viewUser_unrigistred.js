@@ -1,45 +1,125 @@
 import React, { Component } from 'react';
-
+import profilePic from './dash_board_pages/img/profilePic.png'
 
 class UserPage extends Component {
          
+  constructor(props) {
+    super(props);
+    this.state = {
+        data: '',
+        selectedMenu: 'feed',
+        serverError: false,
+        serverMsg: 'asdadasd',
+        modal: false,
+        deleteId: '',
+        pageTitle: ''
+      
+      };
 
 
+  }
+
+  componentDidMount () {
+  
+    const { id } = this.props.match.params
+      //5f4e448becd2f82694d0326b
+       fetch(`http://localhost:3001/api/user/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+            
+      }
+    
+      }).then(response => response.json()
+         
+      ).then(data => {
+        
+        this.setState({data: data})
+       if (data.errorStatus === true) {
+       
+        
+        this.setState({serverError: true});
+       this.setState({serverMsg: data.message});
+          
+      } 
+     
+   
+      }).catch(err => {
+         
+         this.setState({serverError: true});
+         this.setState({serverMsg: err.toString()});
+      });
+   
+  }
   render(){
       
     
+    let render = null;
+
+    if (this.state.serverError) {
+     render =  <div className="notification is-danger">{this.state.serverMsg}</div>
+    } else if (this.state.data === '') {
+     render =  <progress className="progress is-small is-info" max="100">60%</progress>
+    } else {
+      render = <UserProfile data={this.state.data} />
+    }
     
     return(
-        <div className='columns'>
+       
+          
+          <section className="column is-main-content">
+            <div className="container">
+
+          {render}
+          </div>
+          </section>
+          
+        
+
+  );
+    }
+}
+
+
+function UserProfile(props) {
+
+
+
+  return ( 
   <div className='container profile'>
     
-    <div className='section profile-heading'>
+  <div className='section profile-heading'>
       <div className='columns is-mobile is-multiline'>
         <div className='column is-2'>
           <span className='header-icon user-profile-image'>
-            <img alt='' src='http://placehold.it/300x225' />
+          <img alt='' src={profilePic} />
           </span>
         </div>
         <div className='column is-4-tablet is-10-mobile name'>
           <p>
-            <span className='title is-bold'>Paul Miller</span>
+            <span className='title is-bold'>{props.data.name}</span>
             <br />
             
           </p>
           <p className='tagline'>
-            The users profile bio would go here, of course. It could be two lines or more or whatever. We should probably limit the amount of characters to ~500 at most though.
+          {props.data.bio}
+          </p>
+          <br />
+          <p className='tagline'>
+          <strong>Date register: </strong>{props.data.regData}
           </p>
         </div>
         <div className='column is-2-tablet is-4-mobile has-text-centered'>
-          <p className='stat-val'>30</p>
+          <p className='stat-val'>{props.data.tripsN}</p>
           <p className='stat-key'>Trips</p>
         </div>
         <div className='column is-2-tablet is-4-mobile has-text-centered'>
-          <p className='stat-val'>10</p>
+          <p className='stat-val'>{props.data.boatTrips}</p>
           <p className='stat-key'>Boat Trips</p>
         </div>
+        
         <div className='column is-2-tablet is-4-mobile has-text-centered'>
-          <p className='stat-val'>3</p>
+          <p className='stat-val'>{props.data.otherTrips}</p>
           <p className='stat-key'>Other Trips</p>
         </div>
       </div>
@@ -170,11 +250,16 @@ class UserPage extends Component {
       </div>
     </div>
    
-  </div>
-</div>
+  </div>)
 
-  );
-    }
+
+
+
 }
+
+
+
+
+
 
 export default  UserPage;

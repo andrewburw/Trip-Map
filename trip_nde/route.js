@@ -24,9 +24,33 @@ const profileStats = require('./custome_modules/profileStats.js');
     message: 'Entered wrong data!'
     })
   }
-   const {tripName,dateAdded, tripBy,tripDescrp,tripRate,tripDistance,tripComents,tripRoute,tripStops,tripStatus,tripAuthor,tripColor} = req.body; 
+   const { 
+     tripName,
+     dateAdded, 
+     tripBy,
+     tripDescrp,
+     tripRate,
+     tripDistance,
+     tripComents,
+     tripRoute,
+     tripStops,
+     tripStatus,
+     tripAuthor,
+      tripColor} = req.body; 
  
-   const trip = new Trips({tripAuthor,tripName, tripBy,tripDescrp,tripRate,tripRoute,tripDistance, tripComents,tripStops,dateAdded,tripStatus,tripColor});
+   const trip = new Trips({
+    tripAuthor,
+    tripName,
+    tripBy,
+    tripDescrp,
+    tripRate,
+    tripRoute,
+    tripDistance, 
+    tripComents,
+    tripStops,
+    dateAdded,
+    tripStatus,
+    tripColor});
    let tripID = ''; 
 
 
@@ -68,8 +92,8 @@ router.get('/trips/:id', async (req, res, next) => {
 
   } catch (e) {
      
-    res.status(500).json({message: "Somthing wrong!"});
-    next(e) 
+    res.status(500).json({message: "Somthing wrong!",errorStatus:true});
+    
   }
 })
 
@@ -130,11 +154,41 @@ router.get('/userprofile',verifyToken, async (req, res, next) => {
 
   } catch (e) {
      
-    res.status(500).json({message: "Somthing wrong!"});
+    res.status(500).json({message: "Somthing wrong!",errorStatus:true});
     next(e) 
   }
 })
 
+router.get('/user/:id', async (req, res, next) => {
+  try {
+     
+    let param = {};
+    if (req.params.id !== 'null') {
+     
+      param = {_id:req.params.id};
+     
+    } 
+     
+    const user = await User.find(param)
+    const tripResults = await Trips.find({_id: user[0].trips})
+    const {name,trips,about,registerData} = user[0]
+    const {boatCount,otherCount} = profileStats(tripResults) // custome module
+   
+    res.json({
+      name: name,
+      tripsN: trips.length,
+      boatTrips: boatCount, 
+      otherTrips: otherCount,
+      bio:  about,
+      regData: registerData
+     });
+
+  } catch (e) {
+     
+    res.status(500).json({message: "Somthing wrong!",errorStatus:true});
+    
+  }
+})
 
 function verifyToken(req,res,next){
 
@@ -153,4 +207,5 @@ function verifyToken(req,res,next){
   }
 
 }
+
 module.exports = router;

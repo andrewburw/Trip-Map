@@ -3,48 +3,57 @@ import Logo from './img/trip-logo.png';
 import { Link } from "react-router-dom";
 
 class Header extends Component {
-
-    state={
-      authStatus: ''
-    
-    }
-
-    componentDidMount() {
-      // check if user alrady loged in 
-       const auth = 'Bearer ' + localStorage.getItem('token');
-     
-       fetch('http://localhost:3001/api/auth/check', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-        'Authorization': auth
-        },
-        body: JSON.stringify({test: 'test'})
+       
+  constructor(props) {
+    super(props);
+    this.state = {
+        authStatus: this.props.auth
       
-      }).then(response => response.json()
-         
-      ).then(data => {
-         
-         if (data.status) { // if logged in 
-         
-          this.setState({authStatus: true});
-          
-           
-         } else {
-   
-           this.setState({authStatus: false});
-           localStorage.removeItem('token');
-           localStorage.removeItem('user_name');
-           
-         }
+      };
+
+
+  }
+    
+      componentDidMount() {
+        // check if user alrady loged in 
+         const auth = 'Bearer ' + localStorage.getItem('token');
        
-       
-      }).catch(err => {
-         console.error(err)
+         fetch('http://localhost:3001/api/auth/check', {
+          method: 'POST',
+          headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          'Authorization': auth
+          },
+          body: JSON.stringify({test: 'test'})
+        
+        }).then(response => response.json()
+           
+        ).then(data => {
+            
+           if (data.status) { // if logged in 
+           
+           
+              this.props.auth(true)
+              this.setState({authStatus: true});
+            
+             
+           } else {
+     
+             this.setState({authStatus: false});
+             localStorage.removeItem('token');
+             localStorage.removeItem('user_name');
+             
+           }
          
-      });
+         
+        }).catch(err => {
+           console.error(err)
+           
+        });
+     
+     }
    
-   }
+   
    
    signOut = () => {
    
