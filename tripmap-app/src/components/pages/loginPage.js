@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Logo from '../img/trip.png';
 import {Redirect} from "react-router-dom";
+import LoginContext from '../../loginContext'
+
 
 class LoginPage extends Component {
             state = {
@@ -17,7 +19,7 @@ class LoginPage extends Component {
                    
            };
 
-
+           static contextType =  LoginContext
  
  handleChange = (event) => {
        
@@ -85,7 +87,7 @@ setTimeout(() => { // without async bug (or problem whith state update) require 
    }).then(response => response.json()
       
    ).then(data => {
-        console.log(data)
+        
            if ( data.loginError === true) {
       
      this.setState({serverError: true,serverMsg: data.message});
@@ -94,6 +96,10 @@ setTimeout(() => { // without async bug (or problem whith state update) require 
 
        }  else if (data.loginError === false){
         // *** if auth is successful ***
+        const { user, setUser } = this.context
+        const newUser = { name: 'Joe', loggedIn: true }
+
+        setUser(newUser)
           localStorage.setItem('token', data.token);
           localStorage.setItem('user_name', data.userID);
           setTimeout(() => {
@@ -162,9 +168,8 @@ render(){
   if (this.state.loginSuccess) {
       
     return <Redirect to='/dashboard' />
-    
-     
-   }
+       
+  }
 
     return(
         <div className="hero is-primary is-large">

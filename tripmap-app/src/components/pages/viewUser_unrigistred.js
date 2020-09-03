@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import profilePic from './dash_board_pages/img/profilePic.png'
+import tripPic from './dash_board_pages/img/tripIcon.png'
+import tripPic2 from './dash_board_pages/img/tripIcon2.png'
 
 class UserPage extends Component {
          
@@ -33,7 +35,7 @@ class UserPage extends Component {
       }).then(response => response.json()
          
       ).then(data => {
-        
+         console.log(data)
         this.setState({data: data})
        if (data.errorStatus === true) {
        
@@ -162,7 +164,52 @@ function UserProfile(props) {
         </ul>
       </div>
     </div>
+    <div className='columns is-mobile'>
+    { Array.from(props.data.tripsData || []).map((item, i) => {
+
+return  (
+   //<td><Link to={{ pathname: '/viewmap/' + props.data[i]._id, state: { data: props.data[i],recivedDataFromComponent: true} }} >{item['tripName']}</Link></td>
    
+   <div key={i} className='column is-3-tablet is-6-mobile'>
+     <div className='card'>
+       <div className='card-image'>
+         <figure className='image is-4by3'>
+           <img alt='' src={tripPic} />
+         </figure>
+       </div>
+       <div className='card-content'>
+         <div className='content'>
+           <span className='tag is-dark subtitle'>#{i+1}</span>
+           <p> {item['tripDescrp']}</p>
+         </div>
+       </div>
+       <footer className='card-footer'>
+         <a className='card-footer-item' href="1">Compare</a>
+         <a className='card-footer-item' href="1">Share</a>
+         <a className='card-footer-item' href="1">Delete</a>
+       </footer>
+     </div>
+     <br />
+   </div>
+   
+ )})}
+   </div>
+    </div>
+   
+  )
+
+
+
+
+}
+
+
+
+
+
+
+export default  UserPage;
+/*  
     <div className='columns is-mobile'>
       <div className='column is-3-tablet is-6-mobile'>
         <div className='card'>
@@ -248,18 +295,6 @@ function UserProfile(props) {
         </div>
         <br />
       </div>
-    </div>
-   
-  </div>)
-
-
-
-
-}
-
-
-
-
-
-
-export default  UserPage;
+      </div>
+      
+      */

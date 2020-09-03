@@ -1,73 +1,49 @@
 import React, { Component } from 'react';
 import Logo from './img/trip-logo.png';
 import { Link } from "react-router-dom";
+import LoginContext from "../loginContext"
+
 
 class Header extends Component {
        
   constructor(props) {
     super(props);
     this.state = {
-        authStatus: this.props.auth
+        redirectLogout: false
+       
       
       };
-
+   
 
   }
-    
-      componentDidMount() {
-        // check if user alrady loged in 
-         const auth = 'Bearer ' + localStorage.getItem('token');
-       
-         fetch('http://localhost:3001/api/auth/check', {
-          method: 'POST',
-          headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-          'Authorization': auth
-          },
-          body: JSON.stringify({test: 'test'})
-        
-        }).then(response => response.json()
-           
-        ).then(data => {
-            
-           if (data.status) { // if logged in 
-           
-           
-              this.props.auth(true)
-              this.setState({authStatus: true});
-            
-             
-           } else {
-     
-             this.setState({authStatus: false});
-             localStorage.removeItem('token');
-             localStorage.removeItem('user_name');
-             
-           }
-         
-         
-        }).catch(err => {
-           console.error(err)
-           
-        });
-     
-     }
-   
-   
+  static contextType = LoginContext
+
+  
+ 
    
    signOut = () => {
    
-     localStorage.removeItem('token');
-     window.location.reload();
+    localStorage.removeItem('token');
+    window.location.reload()
+    
    
    }
+  
+
   render() {
-       
+    const user = this.context
+
+
         let loginBtn = <div className="buttons">  <Link to="/loginpage"><button className="button is-dark is-outlined">Login</button></Link></div>
-      if (this.state.authStatus) {
+      if (user.user.loggedIn) {
         loginBtn = <div className="buttons"><button className="button is-dark is-outlined" onClick={this.signOut}> Log Out</button></div>
+      } else if (localStorage.getItem('token') !== null){
+        loginBtn = <div className="buttons"><button className="button is-dark is-outlined" onClick={this.signOut}> Log Out</button></div>
+
       }
-    
+
+     
+      
     return(
         <nav className="navbar is-transparent ">
         <div className="navbar-brand">

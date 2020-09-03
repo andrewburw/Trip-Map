@@ -180,7 +180,8 @@ router.get('/user/:id', async (req, res, next) => {
       boatTrips: boatCount, 
       otherTrips: otherCount,
       bio:  about,
-      regData: registerData
+      regData: registerData,
+      tripsData: tripResults
      });
 
   } catch (e) {
