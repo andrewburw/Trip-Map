@@ -87,6 +87,7 @@ function UserProfile(props) {
 
 
 
+
   return ( 
   <div className='container profile'>
     
@@ -165,34 +166,42 @@ function UserProfile(props) {
       </div>
     </div>
    
+   <table className="table is-fullwidth">
+  <thead>
+    <tr>
+      <th>N</th>
+      <th>Trip Name</th>
+      <th>Author</th>
+      <th>Date</th>
+      <th>Rate</th>
+      <th>Distance</th>
+      <th>Trip by</th>
+      <th>Comment</th>
+      <th>Map</th>
+     
+    </tr>
+  </thead>
+  <tbody>
     { Array.from(props.data.tripsData || []).map((item, i) => {
 
 return  (
-   
-  <div key={i} className={(i + 1) % 3 === 0 ? 'columns is-mobile' : ''}>
-   <div  className='column is-3-tablet is-6-mobile'>
-     <div className='card'>
-       <div className='card-image'>
-         <figure className='image is-4by3'>
-           <img alt='' src={tripPic} />
-         </figure>
-       </div>
-       <div className='card-content'>
-         <div className='content'>
-           <span className='tag is-dark subtitle'>#{i+1}</span>
-           <p className="title is-5">{item['tripName']}</p>
-           <p> {item['tripDescrp']}</p>
-         </div>
-       </div>
-       <footer className='card-footer'>
-      <Link to={{ pathname: '/viewmap/' + item['_id'], state: { data: props.data.tripsData[i],recivedDataFromComponent: true} }} > <div className='card-footer-item'>View Map</div></Link>
-     
-       </footer>
-     </div>
-     <br />
-   </div>
-   </div>
+ 
+  <tr key={i}>
+      <th>{i}</th>
+      <td>{item['tripName']}</td>
+      <td>{item['tripAuthor']}</td>
+      <td>{item['dateAdded']}</td>
+      <td>{item['tripRate']}</td>
+      <td>{item['tripDistance']} km</td>
+      <td>{item['tripBy']}</td>
+      <td>{item['tripDescrp']}</td>
+      <td><Link to={{ pathname: '/viewmap/'+item['id'], state: { data: props.data.tripsData[i],recivedDataFromComponent: true} }} >View Map</Link></td>
+      
+    </tr>
+    
  )})}
+    </tbody>
+    </table>
    </div>
     
    
@@ -202,6 +211,7 @@ return  (
 
 
 }
+
 
 
 
