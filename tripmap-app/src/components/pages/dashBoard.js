@@ -12,21 +12,29 @@ import ViewTrips from './dash_board_pages/viewTrips';
 import ViewMap from './dash_board_pages/viewMap';
 
 class DashBoard extends Component {
-          state  = {
-              slectedMenu: 'none'
-
-
-          }
-
+          
+    constructor(props) {
+      super(props);
+      this.state = {
+        slectedMenu: 'none'
+          
+        
+        };
+      }
 selectedMenu = (e) => {
 
   this.setState({selectedMenu: e.target.id})
   
 
 }
+
   render(){
-       
-    
+       let render =  <Route path='/dashboard/viewtrips' component={ViewTrips } />
+     
+    if (this.state.selectedMenu !== undefined) {
+     
+      render =<Route path='/dashboard/viewtrips' component={(props) => ( <ViewTrips timestamp={new Date().toString()} {...props} />)}/>
+    }
     
     return(
       <div className="container ">
@@ -81,9 +89,7 @@ selectedMenu = (e) => {
       <Route path="/dashboard/drawtrip" component={DrawTrip} />
      
       <Route path="/dashboard/viewmap" component={ViewMap} />
-      <Route path='/dashboard/viewtrips' component={ (props) => (
-              <ViewTrips timestamp={new Date().toString()} {...props} />
-             )}/>
+      {render}
     </Switch>
    </div>
    </div> 
@@ -92,3 +98,11 @@ selectedMenu = (e) => {
 }
 
 export default  DashBoard;
+
+/* 
+ <Route path='/dashboard/viewtrips' component={ (props) => (
+              <ViewTrips timestamp={new Date().toString()} {...props} />
+             )}/>
+
+
+*/

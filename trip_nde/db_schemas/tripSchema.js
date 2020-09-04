@@ -21,7 +21,8 @@ let tripSchema = new mongoose.Schema({
             title: String
           }],
           dateAdded: String,
-          tripColor: String
+          tripColor: String,
+          tripAuthorID: String
           
          
 

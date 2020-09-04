@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import {Link,} from "react-router-dom";
 import ModalDelete from './modals/deleteTrip'
-
+import TripIcons from './img/tripicon2.png'
 class AllUserTrips extends Component {
 
     constructor(props) {
@@ -27,29 +27,41 @@ buttonClickMenu = (e) =>{
       
 }
  sortSelected = (data) => { 
-      if(data === '' || this.props.location.state=== undefined ){ return []}
+    
+      let sortParam = null
+      if (this.props.location.state=== undefined ) {
+        sortParam = 'all'
+      } else {
+        sortParam = this.props.location.state.sort
+
+      }
+     // if(data === '' || this.props.location.state=== undefined ){ sortParam = 'all'}
      let result = '';
      let menu = ''; // for Page Title 
-     if (this.props.location.state.sort === 'all') {
+
+     result = data.sort((x)=>{ return new Date(x.dateAdded ) - new Date() }) // sort for newes trips in up
+     if (sortParam === 'all') {
       result = data
       menu = 'View All Trips';
-     } else if(this.props.location.state.sort === 'complite') {
+     } else if(sortParam === 'complite') {
       result = data.filter(x => x.tripStatus ==='Complited');
       menu = 'View Complited Trips';
-     }else if(this.props.location.state.sort === 'plan') {
+     }else if(sortParam === 'plan') {
       result = data.filter(x => x.tripStatus ==='Planed');
       menu = 'View Planned Trips';
-     } else if(this.props.location.state.sort === 'by boats') {
+     } else if(sortParam === 'by boats') {
       result = data.filter(x => x.tripBy === 'by boats')
       menu = 'View Boats Trips';
-     } else if(this.props.location.state.sort === 'by walk') {
+     } else if(sortParam === 'by walk') {
       result = data.filter(x => x.tripBy === 'by walk')
       menu = 'View Walk Trips';
-     } else if(this.props.location.state.sort === 'by bicycle') {
+     } else if(sortParam === 'by bicycle') {
       result = data.filter(x => x.tripBy === 'by bicycle')
       menu = 'View Bicycle Trips';
      }
 
+
+   
   this.setState({data: result,pageTitle: menu})
 
 
@@ -71,6 +83,7 @@ buttonClickMenu = (e) =>{
     }).then(response => response.json()
        
     ).then(data => {
+      console.log(data)
      this.sortSelected(data) // filter by dashboard menu (on the right side menu)
       //this.setState({data: data})
      if (data.errorStatus === true) {
@@ -258,7 +271,7 @@ return ( <div>
     return  (<article className="media" key={Math.random()}>
     <figure className="media-left">
       <p className="image is-64x64">
-        <img src="https://bulma.io/images/placeholders/128x128.png" alt="test" />
+        <img src={TripIcons} alt="test" />
       </p>
       
     </figure>

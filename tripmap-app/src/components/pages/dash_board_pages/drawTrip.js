@@ -6,6 +6,7 @@ import CommentInsert from './modals/modalComment';
 import StopInsert from './modals/modalStop';
 import getDistance from './custome_modules/getDistance'; // my custom module for calculating trip length
 import SaveTrip from './modals/saveTrip';
+import WarningSave from './modals/warningSaveTrip';
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -227,6 +228,7 @@ buttonDropDownColor = (e) => {
 <div className="column is-main-content" >
   <h1 className="title is-5" style={{'marginTop': '1rem'}}>Draw your trip</h1>
   {this.state.modal === 'comment' ? <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} dataEdit={this.state.activeCommentData} /> :""}
+  {this.state.modal === 'warningSave' ? <WarningSave closeModal={this.handleCloseModal}  /> :""}
   {this.state.modal === 'stop' ? <StopInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalStop} dataEdit={this.state.activeStopData}/> : ""} 
   {this.state.modal === 'saveTrip' ? <SaveTrip  data={{distance: getDistance(this.state.trip),tripRoute: this.state.trip,tripStop: this.state.stopMainDATA,tripComents: this.state.commentMainDATA,tripColor: this.state.tripColor}} closeModal={this.handleCloseModal} /> : ""}
   <hr />
@@ -234,7 +236,7 @@ buttonDropDownColor = (e) => {
   
     <div className="level-left">
       <div className="buttons are-small">
-        <button className="button is-success" onClick={()=> { this.setState({modal: 'saveTrip'})}}>Save Trip</button>
+        <button className="button is-success" onClick={()=> {this.state.trip.length < 2 ? this.setState({modal: 'warningSave'}):this.setState({modal: 'saveTrip'}) }}>Save Trip</button>
         <button onClick={this.buttonClickCancel} className="button is-link">Clear All</button>
       </div>
     </div>

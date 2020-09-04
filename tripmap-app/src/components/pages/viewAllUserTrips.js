@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link,} from "react-router-dom";
-
+import TripIcons from './dash_board_pages/img/tripicon2.png'
 
 
 
@@ -35,7 +35,7 @@ buttonClickMenu = (e) =>{
     }).then(response => response.json()
        
     ).then(data => {
-     
+      data.sort((x)=>{ return new Date(x.dateAdded ) - new Date() })
       this.setState({data: data})
      if (data.errorStatus === true) {
       
@@ -124,11 +124,11 @@ return (
     { Array.from(props.data || []).map((item, i) => {
 
 return  (
- 
+ //item['tripAuthor']
   <tr key={i}>
       <th>{i}</th>
       <td><Link to={{ pathname: '/viewmap/' + props.data[i]._id, state: { data: props.data[i],recivedDataFromComponent: true} }} >{item['tripName']}</Link></td>
-      <td>{item['tripAuthor']}</td>
+      <td><Link to={{ pathname: '/user/' + item['tripAuthorID']}} >{item['tripAuthor']}</Link></td>
       <td>{item['dateAdded']}</td>
       <td>{item['tripRate']}</td>
       <td>{item['tripDistance']} km</td>
@@ -166,14 +166,14 @@ return ( <div>
     return  (<article className="media" key={Math.random()}>
     <figure className="media-left">
       <p className="image is-64x64">
-        <img src="https://bulma.io/images/placeholders/128x128.png" alt="test" />
+        <img src={TripIcons } alt="test" />
       </p>
     </figure>
     <div className="media-content">
       <div className="content">
           <div>
             
-          <span className="title is-5">{item['tripName']}</span> <small>@{item['tripAuthor']}</small> <small>{item['dateAdded']}</small>
+          <span className="title is-5">{item['tripName']}</span> <small>@<Link to={{ pathname: '/user/' + item['tripAuthorID']}} >{item['tripAuthor']}</Link></small> <small>{item['dateAdded']}</small>
           <br />
           <span className="is-size-6 is-family-monospace">Raiting - {item['tripRate']}</span>
           <br />

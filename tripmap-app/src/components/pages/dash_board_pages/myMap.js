@@ -42,7 +42,7 @@ class MyMap extends Component {
                
             ).then(data => {
 
-              
+             
               this.setState({data: data})
            
              if (data.errorStatus === true) {

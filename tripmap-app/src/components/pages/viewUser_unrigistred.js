@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import profilePic from './dash_board_pages/img/profilePic.png'
-import tripPic from './dash_board_pages/img/tripIcon.png'
-import tripPic2 from './dash_board_pages/img/tripIcon2.png'
+import profilePic from './dash_board_pages/img/profilePic.png';
+import tripPic from './dash_board_pages/img/tripIcon.png';
+import {Link,} from "react-router-dom";
 
 class UserPage extends Component {
          
@@ -35,7 +35,7 @@ class UserPage extends Component {
       }).then(response => response.json()
          
       ).then(data => {
-         console.log(data)
+         
         this.setState({data: data})
        if (data.errorStatus === true) {
        
@@ -134,15 +134,15 @@ function UserProfile(props) {
               <span className='icon'>
                 <i className='fa fa-list'></i>
               </span>
-              <span>My Lists</span>
+              <span>Boat trips</span>
             </a>
           </li>
-          <li className='link is-active'>
+          <li className='link'>
             <a href="1">
               <span className='icon'>
                 <i className='fa fa-thumbs-up'></i>
               </span>
-              <span>My Likes</span>
+              <span>Bike trips</span>
             </a>
           </li>
           <li className='link'>
@@ -150,27 +150,27 @@ function UserProfile(props) {
               <span className='icon'>
                 <i className='fa fa-search'></i>
               </span>
-              <span>My Searches</span>
+              <span>Walk Trips</span>
             </a>
           </li>
-          <li className='link'>
+          <li className='link is-active'>
             <a href="1">
               <span className='icon'>
                 <i className='fa fa-balance-scale'></i>
               </span>
-              <span>Compare</span>
+              <span>All Trips</span>
             </a>
           </li>
         </ul>
       </div>
     </div>
-    <div className='columns is-mobile'>
+   
     { Array.from(props.data.tripsData || []).map((item, i) => {
 
 return  (
-   //<td><Link to={{ pathname: '/viewmap/' + props.data[i]._id, state: { data: props.data[i],recivedDataFromComponent: true} }} >{item['tripName']}</Link></td>
    
-   <div key={i} className='column is-3-tablet is-6-mobile'>
+  <div key={i} className={(i + 1) % 3 === 0 ? 'columns is-mobile' : ''}>
+   <div  className='column is-3-tablet is-6-mobile'>
      <div className='card'>
        <div className='card-image'>
          <figure className='image is-4by3'>
@@ -180,21 +180,21 @@ return  (
        <div className='card-content'>
          <div className='content'>
            <span className='tag is-dark subtitle'>#{i+1}</span>
+           <p className="title is-5">{item['tripName']}</p>
            <p> {item['tripDescrp']}</p>
          </div>
        </div>
        <footer className='card-footer'>
-         <a className='card-footer-item' href="1">Compare</a>
-         <a className='card-footer-item' href="1">Share</a>
-         <a className='card-footer-item' href="1">Delete</a>
+      <Link to={{ pathname: '/viewmap/' + item['_id'], state: { data: props.data.tripsData[i],recivedDataFromComponent: true} }} > <div className='card-footer-item'>View Map</div></Link>
+     
        </footer>
      </div>
      <br />
    </div>
-   
+   </div>
  )})}
    </div>
-    </div>
+    
    
   )
 

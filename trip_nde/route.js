@@ -38,6 +38,7 @@ const profileStats = require('./custome_modules/profileStats.js');
      tripAuthor,
       tripColor} = req.body; 
  
+     let  tripAuthorID = tkn.userID;
    const trip = new Trips({
     tripAuthor,
     tripName,
@@ -50,7 +51,11 @@ const profileStats = require('./custome_modules/profileStats.js');
     tripStops,
     dateAdded,
     tripStatus,
-    tripColor});
+    tripColor,
+    tripAuthorID});
+
+
+
    let tripID = ''; 
 
 
@@ -78,6 +83,7 @@ const profileStats = require('./custome_modules/profileStats.js');
 
 
 router.get('/trips/:id', async (req, res, next) => {
+  // For unrigistred users
   try {
      
     let param = {};
@@ -122,13 +128,13 @@ router.delete('/usertrips/deletetrip',verifyToken, async (req, res, next) => {
     
   
    await User.findOneAndUpdate({_id: tkn.userID}, {$pull: {trips: id}},{ new: true}); 
-
+   await Trips.findByIdAndDelete({_id: id })      
    res.status(201).json({message: 'Trip deleted!',errorStatus:false});
 
   } catch (e) {
      
     res.status(500).json({message: "Somthing wrong!",errorStatus:true});
-    next(e) 
+    
   }
 })
 
