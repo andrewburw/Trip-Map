@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import profilePic from './dash_board_pages/img/profilePic.png';
-import tripPic from './dash_board_pages/img/tripIcon.png';
+
 import {Link,} from "react-router-dom";
 
 class UserPage extends Component {
