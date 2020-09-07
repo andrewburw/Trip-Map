@@ -36,8 +36,8 @@ class MainPage extends Component {
       <section className="section">
       <div className="container">
       <div className="features-title has-text-centered">
-              <h1 className="title is-2 is-bold">Check Hundreds of Sources in One Search</h1>
-              <p className="subtitle">Our powerful aggregated search makes everything simple</p>
+              <h1 className="title is-2 is-bold">Check Hundreds of Trip Reports in one place</h1>
+              <p className="subtitle">Our simple service allows you to quickly find a trip</p>
              
              
               <br />
@@ -60,8 +60,8 @@ class MainPage extends Component {
     </div>
       </div>
       <div className="media-content">
-      <h3 className="title is-5">Government Registrars 3 </h3>
-      <p>Check all 50 state departments (nationally) for existing business names, trademarks, and patents that may conflict.</p>
+      <h3 className="title is-5">Trips</h3>
+      <p>Draw a map of your adventures. Mark the areas with the most interesting places. Mark the best camping sites.</p>
       </div>
     </div>
     </div>
@@ -84,8 +84,8 @@ class MainPage extends Component {
     </div>
       </div>
       <div className="media-content">
-      <h3 className="title is-5">Government Registrars 3 </h3>
-      <p>Check all 50 state departments (nationally) for existing business names, trademarks, and patents that may conflict.</p>
+      <h3 className="title is-5">Maps </h3>
+      <p>Plan your trip. Mark your stops and overnight stays. Share your plans with your friends.</p>
       </div>
     </div>
     </div>
@@ -112,8 +112,8 @@ class MainPage extends Component {
     </div>
       </div>
       <div className="media-content">
-      <h3 className="title is-5">Government Registrars 3 </h3>
-      <p>Check all 50 state departments (nationally) for existing business names, trademarks, and patents that may conflict.</p>
+      <h3 className="title is-5">Equipment</h3>
+      <p>Choose the inventory with which you make your travels. It can be a boat or a bike or just a walk.</p>
       </div>
     </div>
     </div>
@@ -136,8 +136,8 @@ class MainPage extends Component {
     </div>
       </div>
       <div className="media-content">
-      <h3 className="title is-5">Government Registrars 3 </h3>
-      <p>Check all 50 state departments (nationally) for existing business names, trademarks, and patents that may conflict.</p>
+      <h3 className="title is-5">Users </h3>
+      <p>Check out the trips of other users. Perhaps you will find those that you would like to take.Share your own trips.</p>
       </div>
     </div>
     </div>
@@ -154,7 +154,7 @@ class MainPage extends Component {
       <div className="container">
               <div className="features-title has-text-centered">
                  <h1 className="title is-2 is-bold">Try It Yourself</h1>
-                   <p>Our powerful aggregated search makes everything simple</p>
+                   <p>Our Draw Map function makes everything simple</p>
                  <br />
               </div>
 
@@ -166,8 +166,8 @@ class MainPage extends Component {
                <div className="column is-5">
                   <div className="has-text-right"  >
 
-                    <p className=""><strong>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                      when an unknown printer took a galley of type and scrambled it to make a type specimen boo</strong></p>
+                    <p className=""><strong>Just click draw and draw a line of your route. Click to mark the stop that you liked. 
+                      Or I will comment on an interesting place. Save and share with your friends.Check the length of the route is it too short?</strong></p>
                   </div>
                </div>
 
@@ -191,19 +191,19 @@ class MainPage extends Component {
    <div className="pricing" id="pro">
           <div className="pricing-title has-text-centered">
               <h3 className="title is-3 is-bold">It's Free, but there's more...</h3>
-              <p>Unlock all the data surrounding your name</p>
+              <p>Discover all the best places for adventure</p>
           </div>
           <br />
           <div className="columns is-vcentered">
               <div className="column is-4 is-offset-2">
                   <div className="side-text">
-                      <h3 className="title is-4 is-bold">Discover Our Pro Features</h3><br />
+                      <h3 className="title is-4 is-bold">Discover New Features</h3><br />
                       <p>
-                      One time payment, no contracts or commitments. 100% money back guarantee if you are not satisfied.  
+                      Stop wasting time looking for useless route information.Get instant results with our free service..  
                       </p>
                       <br />
                       <p>
-                      Every pro purchase comes with <strong>unlimited</strong> data access and updates for your company.
+                      Stop writing your <strong>Plans</strong> down on paper, saving screenshots from your screen.
                       </p>
                   </div>
               </div>
@@ -216,12 +216,12 @@ class MainPage extends Component {
                     </figure>
 
                       <div className="list">
-                          <h4>Formal Founder Pro</h4>
-                          <h3>Pro Features</h3>
-                          <h3>Pro Features</h3>
+                          <h4><strong>Register</strong></h4>
+                          <h3><strong>Draw</strong></h3>
+                          <h3><strong>Share</strong></h3>
                       </div>
                       <br />
-                      <button className="button is-primary">Test </button>
+                      <button className="button is-primary">Register an account</button>
                       </div>
                   </div>
               </div>

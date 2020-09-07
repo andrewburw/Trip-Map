@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Logo from '../img/trip.png';
 import {Redirect} from "react-router-dom";
+import TermsCond from "./dash_board_pages/modals/temsCond"
 
 class RegisterPage extends Component {
     constructor(props) {
@@ -247,12 +248,15 @@ checkInputData = (data,feild) => {
    }
     return(
         <div className="hero is-primary is-large">
+       <TermsCond />
       <div className="hero-body reg-main">
+      
         <h1 className="title has-text-centered is-size-2">Register your account</h1>
         <div className="columns is-centered">
          
           <div className="column is-one-third">
             <div className="notification is-light">
+              
               <figure className="image container is-96x96">
               <img src={Logo} alt="Manage your trips" width="50" height="50" />
               </figure>
@@ -311,6 +315,7 @@ checkInputData = (data,feild) => {
           </div>
         </div>
       </div>
+      
     </div>
   );
     }

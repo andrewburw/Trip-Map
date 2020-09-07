@@ -75,17 +75,17 @@ class Header extends Component {
       
           <div className="navbar-end">
             <div className="navbar-item has-dropdown is-hoverable">
-              <a className="navbar-link" href="/">
-                Docs
-              </a>
+              <div className="navbar-link" >
+                Menu
+              </div>
               <div className="navbar-dropdown is-right">
-              <Link to="/registerpage"><div className="navbar-item" href="/">
+              <Link to="/registerpage"><div className="navbar-item">
                   Register
                 </div></Link>
-                <Link to="/trips"><div className="navbar-item" href="/">
+                <Link to="/trips"><div className="navbar-item" >
                   View User Trips
                 </div></Link>
-                <Link to="/dashboard"><div className="navbar-item" href="/">
+                <Link to="/dashboard"><div className="navbar-item" >
                   Dash Board
                 </div></Link>
                 <a className="navbar-item" href="/">
