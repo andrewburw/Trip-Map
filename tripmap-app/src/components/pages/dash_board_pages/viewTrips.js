@@ -83,8 +83,8 @@ buttonClickMenu = (e) =>{
     }).then(response => response.json()
        
     ).then(data => {
-      console.log(data)
-     this.sortSelected(data) // filter by dashboard menu (on the right side menu)
+     
+     this.sortSelected(data) // filter by dashboard menu (on the left side menu)
       //this.setState({data: data})
      if (data.errorStatus === true) {
       

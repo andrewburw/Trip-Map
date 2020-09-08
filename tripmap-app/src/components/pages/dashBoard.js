@@ -37,9 +37,9 @@ selectedMenu = (e) => {
     }
     
     return(
-      <div className="container ">
+      <div className="container hero is-fullheight">
   
-   <div className="columns is-fullheight">
+   <div className="columns ">
      <div className="column is-2 is-sidebar-menu is-hidden-mobile">
       <aside className="menu ">
   <p className="menu-label">
@@ -83,6 +83,7 @@ selectedMenu = (e) => {
   </ul>
 </aside>
 </div>
+   
    <Switch>
       <Route exact path="/dashboard" component={DashMain} />
       <Route path="/dashboard/mymap" component={Mymap} />
@@ -91,8 +92,9 @@ selectedMenu = (e) => {
       <Route path="/dashboard/viewmap" component={ViewMap} />
       {render}
     </Switch>
-   </div>
+   
    </div> 
+   </div>
   );
     }
 }

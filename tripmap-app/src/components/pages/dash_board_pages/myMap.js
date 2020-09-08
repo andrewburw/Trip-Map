@@ -25,7 +25,7 @@ class MyMap extends Component {
 
 
 
-        componentDidMount () {
+componentDidMount () {
   
           const auth = 'Bearer ' + localStorage.getItem('token');
         
@@ -60,7 +60,7 @@ class MyMap extends Component {
                this.setState({serverMsg: err.toString()});
             });
          
-        }
+}
 
   render(){
       
@@ -89,7 +89,7 @@ function MapRender(props) {
 
     return (
       
-            <div className="column is-main-content" >
+            <div className="column is-main-content " >
             <h1 className="title is-5" style={{'marginTop': '1rem'}}>View Trips on Map</h1>
           <hr />
           <div className="level">
