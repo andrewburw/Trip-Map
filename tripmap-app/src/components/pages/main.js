@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import { Link } from "react-router-dom";
 import map_svg from "./svg_icons/map.svg";
 import map_svg2 from "./svg_icons/map2.svg";
@@ -7,11 +7,15 @@ import user_svg from "./svg_icons/user.svg";
 import map_img from "./img/draw_map.png";
 import user2_svg from "./svg_icons/user2.svg";
 
+
+
+
 class MainPage extends Component {
-
-    
-
-
+  
+   scroll = () => {
+    const section = document.querySelector( '#info' );
+    section.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+  };
   render() {
       
     
@@ -27,8 +31,8 @@ class MainPage extends Component {
               Manage your Adventures
             </h2>
            <div className="buttons is-centered">
-              <button className="button is-light is-outlined">Log in</button>
-              <Link to="/dashboard"><button className="button is-light is-outlined">Join US</button></Link>
+              <button className="button is-light is-outlined" onClick={this.scroll} >View Info</button>
+              <Link to="/register"><button className="button is-light is-outlined">Join US</button></Link>
               </div>
           </div>
         </div>
@@ -43,7 +47,7 @@ class MainPage extends Component {
               <br />
           </div>
        <div className="section">
-          <div className="columns is-centered">
+          <div id="info" className="columns is-centered">
 
 <div className="column is-5">
   
@@ -221,7 +225,7 @@ class MainPage extends Component {
                           <h3><strong>Share</strong></h3>
                       </div>
                       <br />
-                      <button className="button is-primary">Register an account</button>
+                      <Link to="/registerpage">   <button className="button is-primary"> Register an account</button></Link>
                       </div>
                   </div>
               </div>

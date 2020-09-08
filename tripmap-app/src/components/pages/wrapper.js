@@ -30,7 +30,7 @@ class Wrapper extends Component {
    }).then(response => response.json()
       
    ).then(data => {
-       console.log(data)
+      
       if (data.status) { // if logged in 
       
         this.setState({loggedIn: true})
@@ -40,10 +40,14 @@ class Wrapper extends Component {
         setUser(newUser)
         
       } else {
-      
+        const {  setUser } = this.context
+        const newUser = { name: 'Joe', loggedIn: false }
+
+        setUser(newUser)
      
         localStorage.removeItem('token');
         localStorage.removeItem('user_name');
+      
         this.setState({loggedIn:false})
         
       }

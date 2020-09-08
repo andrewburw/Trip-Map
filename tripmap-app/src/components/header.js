@@ -19,7 +19,8 @@ class Header extends Component {
   static contextType = LoginContext
 
   
- 
+   
+
    
    signOut = () => {
    
@@ -32,7 +33,7 @@ class Header extends Component {
 
   render() {
     const user = this.context
-
+    let burgerMenu =  <IsNotLogedMenu />
 
         let loginBtn = <div className="buttons">  <Link to="/loginpage"><button className="button is-dark is-outlined">Login</button></Link></div>
       if (user.user.loggedIn) {
@@ -42,7 +43,13 @@ class Header extends Component {
 
       }
 
-     
+     if (user.user.loggedIn) {
+      burgerMenu = <IsLogedMenu />
+     }else if (localStorage.getItem('token') !== null){
+
+      burgerMenu = <IsLogedMenu />
+
+     }
       
     return(
         <nav className="navbar is-transparent ">
@@ -62,15 +69,13 @@ class Header extends Component {
             <a className="navbar-item" href="/">
               Home
             </a>
-            <a className="navbar-item" href="/">
-              item1
+            <a className="navbar-item" href="/" >
+              Info
             </a>
-            <a className="navbar-item" href="/">
-              item2
-            </a>
-            <a className="navbar-item" href="/">
-              item3
-            </a>
+            <Link  className="navbar-item" to="/trips"> 
+              User Trips
+            </Link>
+           
           </div>
       
           <div className="navbar-end">
@@ -78,31 +83,7 @@ class Header extends Component {
               <div className="navbar-link" >
                 Menu
               </div>
-              <div className="navbar-dropdown is-right">
-              <Link to="/registerpage"><div className="navbar-item">
-                  Register
-                </div></Link>
-                <Link to="/trips"><div className="navbar-item" >
-                  View User Trips
-                </div></Link>
-                <Link to="/dashboard"><div className="navbar-item" >
-                  Dash Board
-                </div></Link>
-                <a className="navbar-item" href="/">
-                  Layout
-                </a>
-                <a className="navbar-item" href="/">
-                  Form
-                </a>
-                <hr className="navbar-divider" />
-                <a className="navbar-item" href="/">
-                  Elements
-                </a>
-                <a className="navbar-item is-active" href="/">
-                  Components
-                </a>
-              </div>
-             
+              {burgerMenu}
              
             </div>
            {loginBtn}
@@ -113,5 +94,45 @@ class Header extends Component {
   );
   }
 }
+
+function IsNotLogedMenu () {
+
+
+
+  return (
+    <div className="navbar-dropdown is-right">
+         <Link to="/trips"><div className="navbar-item" >
+        View User Trips
+      </div></Link>
+      <Link to="/registerpage"><div className="navbar-item" >
+        Register
+      </div></Link>
+      <Link to="/loginpage"><div className="navbar-item" >
+        Login
+      </div></Link>
+    </div>
+  )
+  }
+function IsLogedMenu() {
+
+
+
+  return (
+    <div className="navbar-dropdown is-right">
+    <Link to="/trips"><div className="navbar-item" >
+   View User Trips
+ </div></Link>
+ <Link to="/dashboard"><div className="navbar-item" >
+   Dash Board
+ </div></Link>
+ 
+ </div>
+  )
+}
+
+
+
+
+
 
 export default Header;

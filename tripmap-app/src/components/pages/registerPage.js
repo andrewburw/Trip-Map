@@ -12,18 +12,21 @@ class RegisterPage extends Component {
           pass2: '',
           name: '',
           about: '',
+          checkBox: '',
           errorsInField: {
               email:null,
               password1:null,
               password2:null,
               passMatchEror: null,
               name: null,
-              about: null
+              about: null,
+              checkBox: null
            },
           serverError: null,
           serverMsg: '',
           protectButtn: false,
-          registerSuccess: false
+          registerSuccess: false,
+          termsCondModal: false
           
           };
   
@@ -108,11 +111,19 @@ handleSubmit = () => {
 }
 
 handleChange = (e) =>{
-  const id = e.target.id;
   
+  const id = e.target.id;
+    if (id === 'checkBox') {
+      this.setState(state => ({
+        checkBox: !state.checkBox
+      }));
+      
+      this.checkInputData(this.state.checkBox,id) 
+    } else {
   
   this.setState({[id] : e.target.value});
        this.checkInputData(e.target.value,e.target.id) 
+    }
 }
 
 checkInputData = (data,feild) => {
@@ -170,6 +181,11 @@ checkInputData = (data,feild) => {
 	} else if (feild === 'about') {
     
     data.length > 5 ? erorsData['about'] = false : erorsData['about'] = true;
+
+
+  } else if (feild === 'checkBox') {
+     
+      !data  ? erorsData['checkBox'] = false : erorsData['checkBox'] = true;
 
 
   } 
@@ -246,9 +262,21 @@ checkInputData = (data,feild) => {
     
      
    }
+
+  // --------- Terms & Cond -----------------
+  let termsClassErr = 'checkbox';
+  let termsMsg = '';
+  if (this.state.errorsInField.checkBox ) {
+    termsClassErr = 'checkbox is-danger';
+    termsMsg = <p className="help is-danger">Must be checked</p>
+  } 
+     let renderTCModal = ''
+   if (this.state.termsCondModal) {
+    renderTCModal = <TermsCond closeModal={()=>{this.setState({termsCondModal: false})}}/>
+   }
     return(
         <div className="hero is-primary is-large">
-       <TermsCond />
+      {renderTCModal}
       <div className="hero-body reg-main">
       
         <h1 className="title has-text-centered is-size-2">Register your account</h1>
@@ -304,10 +332,11 @@ checkInputData = (data,feild) => {
               <div className="field">
                 <div className="control">
                   <label className="checkbox">
-                    <input type="checkbox" />
-                         I agree to the <b>terms and conditions</b>
+                    <input type="checkbox" id="checkBox" className={termsClassErr} onChange={this.handleChange} />
+                         I agree to the <b><button  className="link-button" onClick={()=>{this.setState({termsCondModal:true})}}>terms and conditions</button></b>.
                      </label>
                  </div>
+                 {termsMsg}
               </div>
               {servErr}
               {buttnSend}
