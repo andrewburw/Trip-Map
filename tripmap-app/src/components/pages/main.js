@@ -6,8 +6,8 @@ import bike_svg from "./svg_icons/bike.svg";
 import user_svg from "./svg_icons/user.svg";
 import map_img from "./img/draw_map.png";
 import user2_svg from "./svg_icons/user2.svg";
-
-
+import Logo from '../img/trip.png';
+import LogoWhite from '../img/tripWhite.png';
 
 
 class MainPage extends Component {
@@ -24,6 +24,9 @@ class MainPage extends Component {
         <section className="hero is-success is-fullheight  is-bold">
         <div className="hero-body bg-main">
           <div className="container has-text-centered ">
+          <figure className="image container is-96x96 is-inline-block imageLogoWhite">
+              <img src={LogoWhite} alt="Manage your trips" />
+              </figure>
             <h1 className="title is-1">
              Welcome to Trip Map
             </h1>
@@ -31,8 +34,9 @@ class MainPage extends Component {
               Manage your Adventures
             </h2>
            <div className="buttons is-centered">
+          
               <button className="button is-light is-outlined" onClick={this.scroll} >View Info</button>
-              <Link to="/register"><button className="button is-light is-outlined">Join US</button></Link>
+              <Link to="/registerpage"><button className="button is-light is-outlined">Join US</button></Link>
               </div>
           </div>
         </div>

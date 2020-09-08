@@ -179,7 +179,7 @@ render(){
           <div className="column is-one-third">
             <div className="notification is-light">
               <figure className="image container is-96x96">
-              <img src={Logo} alt="Manage your trips" width="50" height="50" />
+              <img src={Logo} alt="Manage your trips" />
               </figure>
               <div className="field">
                 <label className="label">Name</label>

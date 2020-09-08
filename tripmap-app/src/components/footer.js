@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Logo from './img/trip.png';
 
 
 class Footer extends Component {
@@ -14,7 +14,11 @@ class Footer extends Component {
       <footer className="footer">
         <div className="container">
           <div className="content has-text-centered">
+          <figure className="image container is-96x96 is-inline-block ">
+              <img src={Logo} alt="Manage your trips" />
+              </figure>
             <p>
+           
             <a href="https://bulma.io">
                 <img src="https://bulma.io/images/made-with-bulma.png" alt="Made with Bulma" width="128" height="24" />
                     </a> <br />

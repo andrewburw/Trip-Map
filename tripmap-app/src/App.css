@@ -71,3 +71,6 @@
   padding: 20px;
   background-color: #F1F1F1;
 }
+.bg-main img {
+   filter: brightness(100%); 
+}
