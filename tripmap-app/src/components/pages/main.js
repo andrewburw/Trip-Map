@@ -6,7 +6,6 @@ import bike_svg from "./svg_icons/bike.svg";
 import user_svg from "./svg_icons/user.svg";
 import map_img from "./img/draw_map.png";
 import user2_svg from "./svg_icons/user2.svg";
-import Logo from '../img/trip.png';
 import LogoWhite from '../img/tripWhite.png';
 
 
