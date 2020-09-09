@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Link,} from "react-router-dom";
 import TripIcons from './dash_board_pages/img/tripicon2.png'
+import configFetch from './../../fetch_config/config.js';
 
 
 
@@ -25,7 +26,7 @@ buttonClickMenu = (e) =>{
 }
 
  componentDidMount () {
-     fetch('http://localhost:3001/api/trips/null', {
+     fetch(configFetch.config.viewAllTripsAdress, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'

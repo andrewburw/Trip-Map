@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import LoginContext from '../../loginContext'
 import { Redirect } from 'react-router-dom';
 import DashBoard from './dashBoard';
-
+import configFetch from './../../fetch_config/config.js';
 
 
 class Wrapper extends Component {
@@ -19,7 +19,7 @@ class Wrapper extends Component {
 
         const auth = 'Bearer ' + localStorage.getItem('token');
    
-    fetch('http://localhost:3001/api/auth/check', {
+    fetch(configFetch.config.wrapperAdress, {
      method: 'POST',
      headers: {
      'Content-Type': 'application/json;charset=utf-8',

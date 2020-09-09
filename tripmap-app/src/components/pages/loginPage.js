@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Logo from '../img/trip.png';
 import {Redirect} from "react-router-dom";
 import LoginContext from '../../loginContext'
-
+import configFetch from './../../fetch_config/config.js'
 
 class LoginPage extends Component {
             state = {
@@ -76,7 +76,7 @@ setTimeout(() => { // without async bug (or problem whith state update) require 
   
        
        
-    fetch('http://localhost:3001/api/auth/login', {
+    fetch(configFetch.config.loginAdress, { 
    method: 'POST',
    headers: {
      'Content-Type': 'application/json;charset=utf-8'
@@ -126,7 +126,7 @@ setTimeout(() => { // without async bug (or problem whith state update) require 
 }
     
 render(){
-
+   
           // ********** login/pass check *******************
 	// ---- email ----
 	

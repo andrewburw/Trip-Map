@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Redirect} from "react-router-dom";
-
+import configFetch from './../../../../fetch_config/config.js';
 
 
 class SaveTrip extends Component {
@@ -110,7 +110,7 @@ handleSubmit = () => {
  
  
  
-     fetch('http://localhost:3001/api/newtrip', {
+     fetch(configFetch.config.modalsSaveTripAdress, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',

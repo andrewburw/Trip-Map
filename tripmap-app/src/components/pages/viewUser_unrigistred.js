@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import profilePic from './dash_board_pages/img/profilePic.png';
-
+import configFetch from './../../fetch_config/config.js';
 import {Link,} from "react-router-dom";
 
 class UserPage extends Component {
@@ -25,7 +25,8 @@ class UserPage extends Component {
   
     const { id } = this.props.match.params
       //5f4e448becd2f82694d0326b
-       fetch(`http://localhost:3001/api/user/${id}`, {
+      //https://tripmapapi.herokuapp.com/
+       fetch(configFetch.config.viewUserUnregAdress + id, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'

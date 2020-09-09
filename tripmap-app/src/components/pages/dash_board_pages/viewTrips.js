@@ -1,7 +1,10 @@
 import React, { Component} from 'react';
 import {Link,} from "react-router-dom";
-import ModalDelete from './modals/deleteTrip'
-import TripIcons from './img/tripicon2.png'
+import ModalDelete from './modals/deleteTrip';
+import TripIcons from './img/tripicon2.png';
+import configFetch from './../../../fetch_config/config.js';
+
+
 class AllUserTrips extends Component {
 
     constructor(props) {
@@ -71,7 +74,7 @@ buttonClickMenu = (e) =>{
   
   const auth = 'Bearer ' + localStorage.getItem('token');
 
-     fetch('http://localhost:3001/api/usertrips', {
+     fetch(configFetch.config.dashViewTripsAdress, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',

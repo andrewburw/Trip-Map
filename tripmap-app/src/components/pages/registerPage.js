@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Logo from '../img/trip.png';
 import {Redirect} from "react-router-dom";
 import TermsCond from "./dash_board_pages/modals/temsCond"
+import configFetch from './../../fetch_config/config.js';
+
+
 
 class RegisterPage extends Component {
     constructor(props) {
@@ -51,8 +54,8 @@ handleSubmit = () => {
     this.setState({protectButtn: true}) // protect button register from multiply press
 
 
-
-    fetch('http://localhost:3001/api/auth/register', {
+   
+    fetch(configFetch.config.registerPageAdress, {
    method: 'POST',
    headers: {
      'Content-Type': 'application/json;charset=utf-8'

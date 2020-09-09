@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { Map, TileLayer, Polyline,Marker, Popup} from 'react-leaflet'
 import L from 'leaflet';
+import configFetch from './../../fetch_config/config.js';
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -38,8 +39,8 @@ componentDidMount(){
       this.setState({data: this.props.location.state.data})
       
   }else {
-  
-fetch(`http://localhost:3001/api/trips/${id}`, {
+ 
+fetch(configFetch.config.viewMapUnregAdress + id, { 
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'

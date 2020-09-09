@@ -159,7 +159,7 @@ router.get('/userprofile',verifyToken, async (req, res, next) => {
     });
 
   } catch (e) {
-     
+    
     res.status(500).json({message: "Somthing wrong!",errorStatus:true});
     next(e) 
   }

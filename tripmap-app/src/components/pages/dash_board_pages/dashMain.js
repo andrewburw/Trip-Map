@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import profilePic from './img/profilePic.png'
-
+import configFetch from './../../../fetch_config/config.js';
 
 class DashMain extends Component {
 
@@ -24,7 +24,7 @@ class DashMain extends Component {
   
     const auth = 'Bearer ' + localStorage.getItem('token');
   
-       fetch('http://localhost:3001/api/userprofile', {
+       fetch(configFetch.config.dashMainUserProfAdress, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
