@@ -9,14 +9,36 @@ import user2_svg from "./svg_icons/user2.svg";
 import LogoWhite from '../img/tripWhite.png';
 
 
+
+
 class MainPage extends Component {
+                   state = {
+                      isMobile: false
+
+
+                   }
+
+componentDidMount() {
+  /* =================
+     Problem (bug) with bulma responsive images, this crutches is: turn off images if size of display is mobile
+    ==================
+  */  
+  if(window.innerWidth < 480 ){
+    this.setState({isMobile: true})
+  }
   
+
+
+}
+
+
+
    scroll = () => {
     const section = document.querySelector( '#info' );
     section.scrollIntoView( { behavior: 'smooth', block: 'start' } );
   };
   render() {
-      
+       
     
     return(
       <div>
@@ -46,24 +68,24 @@ class MainPage extends Component {
               <h1 className="title is-2 is-bold">Check Hundreds of Trip Reports in one place</h1>
               <p className="subtitle">Our simple service allows you to quickly find a trip</p>
              
-             
+            
               <br />
           </div>
        <div className="section">
-          <div id="info" className="columns is-centered">
+          <div id="info" className="columns  is-centered">
 
-<div className="column is-5">
+<div className="column is-5 ">
   
   <div className="box">
 
-    <div className="card-content">
-    <div className="media">
-    <div className="media-left">
-    <div className="card-image ">
-    
-      <figure className="image is-128x128">
-      <img src={map_svg} alt="React Logo" />
-      </figure>
+    <div className="card-content" >
+    <div className="media" >
+    <div className="media-left" >
+    <div className="card-image">
+    { !this.state.isMobile ? 
+      <figure className="image   is-128x128" >
+      <img src={map_svg} alt="Trip Map" />
+      </figure> : '' }
     </div>
       </div>
       <div className="media-content">
@@ -84,10 +106,10 @@ class MainPage extends Component {
     <div className="media">
     <div className="media-left">
     <div className="card-image ">
-    
+    { !this.state.isMobile ?
       <figure className="image is-128x128">
       <img src={map_svg2} alt="React Logo" />
-      </figure>
+      </figure> : ''}
     </div>
       </div>
       <div className="media-content">
@@ -112,10 +134,10 @@ class MainPage extends Component {
     <div className="media">
     <div className="media-left">
     <div className="card-image ">
-    
+    { !this.state.isMobile ?
       <figure className="image is-128x128">
       <img src={bike_svg} alt="React Logo" />
-      </figure>
+    </figure> : ''  }
     </div>
       </div>
       <div className="media-content">
@@ -136,10 +158,10 @@ class MainPage extends Component {
     <div className="media">
     <div className="media-left">
     <div className="card-image ">
-    
+    { !this.state.isMobile ?  
       <figure className="image is-128x128">
       <img src={user_svg} alt="React Logo" />
-      </figure>
+      </figure> : ''}
     </div>
       </div>
       <div className="media-content">

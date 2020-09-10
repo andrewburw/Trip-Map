@@ -71,8 +71,8 @@ clickMap = (e) =>{
 
 reciveDataFromModalComent = (data) => {
   let temp = [...this.state.commentMainDATA];
-   
-  if (data.modyfy === false) {
+    
+  if (data.modeEdit=== false) {
     temp.push({
       coordinates: data.coordinates,
       comment: data.comment,
@@ -87,7 +87,7 @@ reciveDataFromModalComent = (data) => {
       id: data.id
   });
   }
-   
+  
     this.setState({'activeCommentData': ''});
     this.setState({'commentMainDATA': temp});
  
