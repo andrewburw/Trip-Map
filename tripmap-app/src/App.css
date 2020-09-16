@@ -74,3 +74,9 @@
 .bg-main img {
    filter: brightness(100%); 
 }
+/* In draw map search modal*/
+
+tbody.classForHover tr:hover  {
+   cursor: pointer;
+   background-color: cadetblue;
+}

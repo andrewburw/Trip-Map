@@ -132,7 +132,7 @@ function UserProfile(props) {
       <div className='tabs is-fullwidth is-medium'>
         <ul>
           <li className='link'>
-            <a href="1">
+            <a href="#top">
               <span className='icon'>
                 <i className='fa fa-list'></i>
               </span>
@@ -140,7 +140,7 @@ function UserProfile(props) {
             </a>
           </li>
           <li className='link'>
-            <a href="1">
+            <a href="#top">
               <span className='icon'>
                 <i className='fa fa-thumbs-up'></i>
               </span>
@@ -148,7 +148,7 @@ function UserProfile(props) {
             </a>
           </li>
           <li className='link'>
-            <a href="1">
+            <a href="#top">
               <span className='icon'>
                 <i className='fa fa-search'></i>
               </span>
@@ -156,7 +156,7 @@ function UserProfile(props) {
             </a>
           </li>
           <li className='link is-active'>
-            <a href="1">
+            <a href="#top">
               <span className='icon'>
                 <i className='fa fa-balance-scale'></i>
               </span>

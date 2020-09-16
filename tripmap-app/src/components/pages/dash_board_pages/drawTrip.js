@@ -7,6 +7,10 @@ import StopInsert from './modals/modalStop';
 import getDistance from './custome_modules/getDistance'; // my custom module for calculating trip length
 import SaveTrip from './modals/saveTrip';
 import WarningSave from './modals/warningSaveTrip';
+import SelectRoute from './modals/selectRoute';
+
+
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
@@ -179,8 +183,8 @@ buttonClickDeleteComment = (e) => {
 
 buttonClickEditStop = (e) => {
   
-  let temp = this.state.stopMainDATA.find(x => x.id === e.target.id)
-   temp.modyfy = true
+  let temp = this.state.stopMainDATA.find(x => x.id === e.target.id);
+   temp.modyfy = true;
   
   this.setState({'activeStopData': temp});
   this.setState({'modal':'stop'});
@@ -203,7 +207,7 @@ buttonDropDownColor = (e) => {
   render() {
     //************ BUTTON MENU SELECTED***************
     
-    let buttonSeleted = {}
+    let buttonSeleted = {};
       if (this.state.selectedMenu === 'drawRoute') {
         buttonSeleted.drawRoute = 'buttonMenuIndrawRoute';
       
@@ -217,9 +221,9 @@ buttonDropDownColor = (e) => {
       }
 
    
-     let showDropDown = ''
+     let showDropDown = '';
     
-     showDropDown = this.state.dropDownShow === true ? 'is-active': ''
+     showDropDown = this.state.dropDownShow === true ? 'is-active': '';
   
     return(
     
@@ -227,6 +231,8 @@ buttonDropDownColor = (e) => {
 
 <div className="column is-main-content" >
   <h1 className="title is-5" style={{'marginTop': '1rem'}}>Draw your trip</h1>
+  <SelectRoute closeModal={this.handleCloseModal}  />
+  {this.state.modal === 'selectRoute' ? <SelectRoute closeModal={this.handleCloseModal}  /> :""}
   {this.state.modal === 'comment' ? <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} dataEdit={this.state.activeCommentData} /> :""}
   {this.state.modal === 'warningSave' ? <WarningSave closeModal={this.handleCloseModal}  /> :""}
   {this.state.modal === 'stop' ? <StopInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalStop} dataEdit={this.state.activeStopData}/> : ""} 
@@ -242,6 +248,7 @@ buttonDropDownColor = (e) => {
     </div>
    <div className="level-right">
      <div className="buttons are-small">
+       <button className="button" value="selectRoute" onClick={()=> this.setState({modal: 'selectRoute'})}>Select Existing Routes</button>
        <button className={'button '+ buttonSeleted.drawRoute || ''} value="drawRoute" onClick={this.buttonClickMenu }>Draw Route</button>
        <button className={'button '+ buttonSeleted.addComent || ''} value="addComent" onClick={this.buttonClickMenu }>Add Comment</button>
        <button className={'button '+  buttonSeleted.addStop || ''} value="addStop" onClick={this.buttonClickMenu }>Add Stop</button>

@@ -178,7 +178,7 @@ router.get('/user/:id', async (req, res, next) => {
     const user = await User.find(param)
     const tripResults = await Trips.find({_id: user[0].trips})
     const {name,trips,about,registerData} = user[0]
-    const {boatCount,otherCount} = profileStats(tripResults) // custome module
+    const {boatCount,otherCount} = profileStats(tripResults) // custom module
    
     res.json({
       name: name,
@@ -196,6 +196,25 @@ router.get('/user/:id', async (req, res, next) => {
     
   }
 })
+
+
+router.post('/searchroute',verifyToken, async (req, res) => {
+  try {
+    const tkn =  jwt.verify(req.token,config.get('keycript')); 
+   
+    let {searchString} = req.body;
+   const searchResult = await Trips.find({tripName:{ "$regex": searchString, "$options": "i" }});
+    
+
+   res.json(searchResult);
+
+  } catch (e) {
+     console.log(e)
+    res.status(500).json({message: "Somthing wrong!",errorStatus:true});
+  
+  }
+})
+
 
 function verifyToken(req,res,next){
 
