@@ -327,7 +327,7 @@ function ModalShareLink(props) {
   function copyToClipboard (e){
     alert('Copied!')
     props.closeModal()
-    navigator.clipboard.writeText('adress/api/trip' + props.dataLink)
+    navigator.clipboard.writeText('https://tripmap.herokuapp.com/viewmap/' + props.dataLink)
 
   }
  
@@ -342,7 +342,7 @@ return ( <div className="modal is-active">
    <p>Share this link</p>
    <br />
    <div className="level">
-     <input className="input is-small" type="text" defaultValue={'adress/api/trip' + props.dataLink} />
+     <input className="input is-small" type="text" defaultValue={'https://tripmap.herokuapp.com/viewmap/' + props.dataLink} />
      <button className="button is-small is-dark " onClick={copyToClipboard}>Copy To Clipboard</button>
    </div>
   </section>

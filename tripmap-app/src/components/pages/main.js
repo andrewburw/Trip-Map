@@ -196,7 +196,7 @@ componentDidMount() {
                   <div className="has-text-right"  >
 
                     <p className=""><strong>Just click draw and draw a line of your route. Click to mark the stop that you liked. 
-                      Or I will comment on an interesting place. Save and share with your friends.Check the length of the route is it too short?</strong></p>
+                      Or write a comment on an interesting place. Save and share with your friends.Check the length of the route is it too short?</strong></p>
                   </div>
                </div>
 

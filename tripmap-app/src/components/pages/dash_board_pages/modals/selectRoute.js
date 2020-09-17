@@ -22,10 +22,9 @@ handleClickClose = () => {
 
 selected = (e) => {
 
-   console.log(e.target.getAttribute('mykeyvalue'))
- //  this.props.data = this.state.data2.filter(x => x.id === e.target.getAttribute('mykeyvalue'))
-   console.log(this.state.data.filter(x => x._id === e.target.getAttribute('mykeyvalue')))
-
+   // return data to main "draw trip" component
+  this.props.data(this.state.data.filter(x => x._id === e.target.getAttribute('mykeyvalue')))
+  this.handleClickClose()
 }
 search = (e) =>{
    
@@ -53,8 +52,8 @@ search = (e) =>{
     
     }  else {
           // if everything is ok (no errors.)
-         console.log(data)
-        this.setState({data: data}); // protect button
+   
+        this.setState({data: data}); 
     
      
  

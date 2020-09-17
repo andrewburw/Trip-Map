@@ -72,7 +72,27 @@ clickMap = (e) =>{
     }
    
 }
+dataReciveFromSelectTrip = (data) => {
+  this.setState({'commentMainDATA': []}); 
+  let temp = [];
 
+  this.setState({trip: data[0].tripRoute})
+  temp.push({
+    coordinates: data[0].tripRoute[0],
+    comment: 'Trip Start.',
+    id: '_' + Math.random().toString(36).substr(2, 9) // generate small ID
+});
+
+temp.push({
+  coordinates: data[0].tripRoute[data[0].tripRoute.length-1],
+  comment: 'Trip End.',
+  id: '_' + Math.random().toString(36).substr(2, 9) // generate small ID
+});
+
+this.setState({'commentMainDATA': temp});
+ 
+
+}
 reciveDataFromModalComent = (data) => {
   let temp = [...this.state.commentMainDATA];
     
@@ -231,8 +251,8 @@ buttonDropDownColor = (e) => {
 
 <div className="column is-main-content" >
   <h1 className="title is-5" style={{'marginTop': '1rem'}}>Draw your trip</h1>
-  <SelectRoute closeModal={this.handleCloseModal}  />
-  {this.state.modal === 'selectRoute' ? <SelectRoute closeModal={this.handleCloseModal}  /> :""}
+  
+  {this.state.modal === 'selectRoute' ? <SelectRoute closeModal={this.handleCloseModal} data={this.dataReciveFromSelectTrip}  /> :""}
   {this.state.modal === 'comment' ? <CommentInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalComent} dataEdit={this.state.activeCommentData} /> :""}
   {this.state.modal === 'warningSave' ? <WarningSave closeModal={this.handleCloseModal}  /> :""}
   {this.state.modal === 'stop' ? <StopInsert closeModal={this.handleCloseModal} data={this.reciveDataFromModalStop} dataEdit={this.state.activeStopData}/> : ""} 
@@ -293,7 +313,7 @@ buttonDropDownColor = (e) => {
  <div>
  
  <Map
-      center={[57.1273,384.6539]}
+      center={this.state.trip[0] || [57.1273,384.6539]}
       zoom={13}
       onClick={this.clickMap}
     >
